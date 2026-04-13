@@ -53,6 +53,6 @@ This project currently implements FR-S1 / FR-D1: Authentication (Login/Logout) â
 - Auth filter for protecting all pages
 - Student dashboard content (enrollments, holds, schedule)
 - Faculty dashboard content (sections taught, department info)
-- Course search and enrollment (FR-S3, FR-S4)
+- Course enrollment (FR-S4)
 - Financial records view (FR-S9)
 - Password change (FR-S10)
