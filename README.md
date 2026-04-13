@@ -25,26 +25,33 @@ This project currently implements FR-S1 / FR-D1: Authentication (Login/Logout) â
 
 **Server:** Apache Tomcat 9
 
-**Java:** Java 17
+**Java:** Java 8
 
-**IDE:** Eclipse / IntelliJ
+**IDE:** Eclipse
+## Prerequisites
+
+- **Java 8+** installed
+- **Apache Tomcat 9** installed (e.g. at `C:\tomcat8`)
+- **MySQL 9.6** running on `localhost:3306`
+- **Eclipse** for compiling the project
 ## Database Setup
 
 ```bash
   1. Open MySQL Workbench and connect to the local MySQL server
   2. Run the full yoursjsu database script which will create all the tables and sample data
 ```
-    
 ## Deployment
-```bash
-  1. Import the YourSJSU folder as an existing project in Eclipse
-  2. Configure Tomcat as a server in Eclipse
-  3. Right click the project > Run As > Run on Server > select Tomcat
-  4. Eclipse will deploy the app and open the browser to the login page
-```
-## Implemented Functional Requirements (Updated 4/2/2026)
+- Import the **YourSJSU** folder as an existing project in Eclipse
+- Edit the **DatabaseConnection.java** for your MySQL Workbench setup
+- In Eclipse, right-click the **YourSJSU** project > **Properties** > **Java Compiler**
+- Enable **project specific settings**
+- Set **Compiler compliance level** to **1.8**
+- Right-click the project > **Properties** > **Java Build Path** > **Libraries**
+- Under **Classpath**, click **Add Library** > **Server Runtime** > select **Apache Tomcat v9.0**
+## Implemented Functional Requirements (Updated 4/13/2026)
 
-- FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out. Error messages are generic to avoid revealing whether the ID or password was incorrect.
+- FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
+- FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
 ## Future Work
 
 - Real bcrypt password verification (add jBCrypt library)
@@ -52,6 +59,6 @@ This project currently implements FR-S1 / FR-D1: Authentication (Login/Logout) â
 - Auth filter for protecting all pages
 - Student dashboard content (enrollments, holds, schedule)
 - Faculty dashboard content (sections taught, department info)
-- Course search and enrollment (FR-S3, FR-S4)
+- Course enrollment (FR-S4)
 - Financial records view (FR-S9)
-- Password change (FR-S10)
+- Password change (FR-S10) (in progress 4/13/2026)

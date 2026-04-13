@@ -1,68 +1,44 @@
-<%@ page import="java.sql.*"%>
-<html>
-	<head>
-	  <title>YourSJSU</title>
-	</head>
-	<body>
-	<h1>YourSJSU</h1>
-	<form method="post" action="login.jsp">
-		<table class="form-table">
-		  <tbody>
-		    <tr>
-		      <td>
-		        <label>SJSU Id Number</label>
-		        <div class="id-wrap">
-		        	<input class="field-input" type="id" id="id" name="id"/>
-		        </div>
-		      </td>
-		    </tr>
-		    <tr>
-		      <td>
-		        <label class="field-label" for="password">Password</label>
-		        <div class="pw-wrap">
-		          <input class="field-input" type="password" id="password" name="password"/>
-		        </div>
-		      </td>
-		    </tr>
-		    <tr>
-		      <td>
-		        <button>Enter</button>
-		        <button>Forgot Password</button>
-		      </td>
-		    </tr>
-		  </tbody>
-		</table>
-	 </form>
-	 <%
-	 	if (request.getMethod().equals("POST")) {
-	        String id = request.getParameter("id");
-	        String password = request.getParameter("password");
-	        
-	        if(id == ""){
-	        	out.println("SJSU Id is missing");
-	 		}
-	        
-	        else if (password == "") {
-	        	out.println("Password is missing");
-	        }
-	        
-	        else {
-	        	
-	        	int sjsuId;
-	        	try {
-		            sjsuId = Integer.parseInt(id);
-		            out.println("The person has the id of:"+ id);
-			        out.println("The person has the password of:"+ password);
-		        } catch (NumberFormatException e) {
-		        	out.println(e);
-		        } catch (NullPointerException e) {
-		        	out.println(e);
-		        }
-	        	
-	        }
-	        
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YourSJSU - Sign In</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <h1>YourSJSU</h1>
+            <p>San Jose State University</p>
+        </div>
 
-	    }
-	 %>
-	</body>
+        <form action="${pageContext.request.contextPath}/login" method="post" class="login-form">
+
+            <% String error = (String) request.getAttribute("error");
+               if (error != null) { %>
+                <div class="error-message"><%= error %></div>
+            <% } %>
+
+            <div class="form-group">
+                <label for="identifier">SJSU ID or Email</label>
+                <input type="text" id="identifier" name="identifier"
+                       placeholder="Ex. 012345678 or name@sjsu.edu" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn-login">Sign In</button>
+        </form>
+
+        <div class="login-footer">
+            <p>An Hoai Ngo - Nathan Wong - Vincent Do</p>
+        </div>
+    </div>
+</body>
 </html>
