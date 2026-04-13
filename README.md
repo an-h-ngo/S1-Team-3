@@ -39,6 +39,7 @@ This project currently implements FR-S1 / FR-D1: Authentication (Login/Logout) â
 ```bash
   1. Open MySQL Workbench and connect to the local MySQL server
   2. Run the full yoursjsu database script which will create all the tables and sample data
+  2. Update src/main/java/com/yoursjsu/dao/DatabaseConnection.java with your MySQL Workbench password
 ```
 ## Deployment
 - Import the **YourSJSU** folder as an existing project in Eclipse
