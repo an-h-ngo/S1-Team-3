@@ -45,6 +45,7 @@ This project currently implements FR-S1 / FR-D1: Authentication (Login/Logout) â
 ## Implemented Functional Requirements (Updated 4/2/2026)
 
 - FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out. Error messages are generic to avoid revealing whether the ID or password was incorrect.
+- FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
 ## Future Work
 
 - Real bcrypt password verification (add jBCrypt library)
