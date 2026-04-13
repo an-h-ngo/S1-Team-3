@@ -12,8 +12,6 @@ CS 157A - Introduction to Database Management Systems | San Jose State Universit
 
 YourSJSU is a reimagined student and faculty portal built as a Java web application backed by a MySQL database. It streamlines common university workflows such as registration, class scheduling, transcript access, and financial records.
 
-This project currently implements FR-S1 / FR-D1: Authentication (Login/Logout) — users can sign in with their SJSU ID or email and are routed to the appropriate dashboard based on their role (student or faculty).
-
 
 ## Tech Stack
 
