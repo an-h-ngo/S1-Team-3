@@ -11,10 +11,15 @@
     <div class="login-container">
         <div class="login-header">
             <h1>YourSJSU</h1>
-            <p>San Jose State University</p>
+            <p>San Jose State University Portal</p>
         </div>
 
         <form action="${pageContext.request.contextPath}/login" method="post" class="login-form">
+
+            <% String success = (String) request.getAttribute("success");
+               if (success != null) { %>
+                <div class="success-message"><%= success %></div>
+            <% } %>
 
             <% String error = (String) request.getAttribute("error");
                if (error != null) { %>
@@ -24,7 +29,7 @@
             <div class="form-group">
                 <label for="identifier">SJSU ID or Email</label>
                 <input type="text" id="identifier" name="identifier"
-                       placeholder="Ex. 012345678 or name@sjsu.edu" required>
+                       placeholder="e.g. 012345678 or name@sjsu.edu" required>
             </div>
 
             <div class="form-group">
@@ -37,7 +42,7 @@
         </form>
 
         <div class="login-footer">
-            <p>An Hoai Ngo - Nathan Wong - Vincent Do</p>
+            <p>CS 157A &mdash; Team 3</p>
         </div>
     </div>
 </body>
