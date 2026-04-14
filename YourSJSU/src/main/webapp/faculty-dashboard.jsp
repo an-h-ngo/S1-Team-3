@@ -29,6 +29,10 @@
         <% if (user != null) { %>
             <p class="dashboard-subtitle">Welcome, <%= user.getFirstName() %>. You are logged in as faculty.</p>
         <% } %>
+
+        <div class="dashboard-actions">
+            <a href="${pageContext.request.contextPath}/change-password" class="btn-action">Change Password</a>
+        </div>
     </main>
 </body>
 </html>
