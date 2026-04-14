@@ -23,4 +23,19 @@ public class CredentialDAO {
         }
         return null;
     }
+
+    public boolean updatePassword(int userId, String newPassword) {
+        String sql = "UPDATE credential SET password_hash = ? WHERE user_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newPassword);
+            stmt.setInt(2, userId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

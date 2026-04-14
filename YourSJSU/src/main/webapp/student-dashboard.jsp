@@ -32,6 +32,7 @@
 
         <div class="dashboard-actions">
             <a href="${pageContext.request.contextPath}/search-courses" class="btn-action">Search Courses</a>
+            <a href="${pageContext.request.contextPath}/change-password" class="btn-action">Change Password</a>
         </div>
     </main>
 </body>

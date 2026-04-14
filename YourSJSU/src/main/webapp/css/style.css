@@ -1,5 +1,4 @@
 /*
-MAIN COLORS
 Gold #E5A823, Blue #0055A2
 */
 
@@ -105,6 +104,17 @@ body {
     text-align: center;
 }
 
+.success-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
 .login-footer {
     text-align: center;
     margin-top: 24px;
@@ -177,6 +187,13 @@ body {
 .dashboard-subtitle {
     font-size: 16px;
     color: #555;
+}
+
+/* CHANGE PASSWORD */
+.change-password-content {
+    display: flex;
+    justify-content: center;
+    padding: 60px 24px;
 }
 
 .dashboard-actions {
