@@ -51,6 +51,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 - FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
 - FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
+- FR-S10: Password change - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
 ## Future Work
 
 - Real bcrypt password verification (add jBCrypt library)
@@ -60,4 +61,3 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Faculty dashboard content (sections taught, department info)
 - Course enrollment (FR-S4)
 - Financial records view (FR-S9)
-- Password change (FR-S10) (in progress 4/13/2026)
