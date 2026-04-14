@@ -25,6 +25,10 @@ public class LoginServlet extends HttpServlet {
             redirectByRole(user, request, response);
             return;
         }
+        String success = request.getParameter("success");
+        if ("passwordChanged".equals(success)) {
+            request.setAttribute("success", "Password changed successfully. Please log in with your new password.");
+        }
         request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
@@ -58,7 +62,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         String hash = credentialDAO.getPasswordHash(user.getUserId());
-        if (hash == null) {
+        if (hash == null || !hash.equals(password)) {
             request.setAttribute("error", "Invalid credentials.");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
