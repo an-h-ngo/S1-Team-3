@@ -15,7 +15,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 ## Tech Stack
 
-**Frontend:** JSP, HTML, CSS
+**Frontend:** JSP, HTML, CSS, JS
 
 **Backend:** Java Servlets (Servlet 4.0)
 
@@ -51,6 +51,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 - FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
 - FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
+- FR-S7: View Schedule - Students can view their 
 - FR-S10: Password change - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
 ## Future Work
 
