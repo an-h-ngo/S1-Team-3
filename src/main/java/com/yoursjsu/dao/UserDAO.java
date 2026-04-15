@@ -1,4 +1,4 @@
-package src.main.java.com.yoursjsu.dao;
+package com.yoursjsu.dao;
 import com.yoursjsu.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package src.main.java.com.yoursjsu.servlet;
+package com.yoursjsu.servlet;
 import com.yoursjsu.dao.CourseSearchDAO;
 import com.yoursjsu.model.SectionResult;
 import javax.servlet.ServletException;

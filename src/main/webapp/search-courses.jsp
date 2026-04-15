@@ -25,6 +25,29 @@
             </form>
         </div>
     </nav>
+    
+        <nav class="nav-bar1">
+	    <div class="nav-link" onclick="goTo('/student-dashboard')">
+	        Student Dashboard
+	    </div>
+	    <div class="nav-link" onclick="goTo('/courses')">
+	        Courses
+	    </div> 
+	    <div class="nav-link" onclick="goTo('/schedule')">
+	        Term Schedule
+	    </div> 
+	    <div class="nav-link" onclick="goTo('/transcript')">
+	        Transcript
+	    </div> 
+	    <div class="nav-link" onclick="goTo('/financial-summary')">
+	        Financial Summary
+	    </div> 
+ 	</nav>
+    <script>
+		function goTo(path) {
+		    window.location.href = "<%= request.getContextPath() %>" + path;
+		}
+	</script>
 
     <main class="search-content">
         <h1>Search Courses</h1>

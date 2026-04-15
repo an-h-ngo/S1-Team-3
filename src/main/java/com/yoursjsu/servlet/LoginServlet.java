@@ -1,4 +1,4 @@
-package src.main.java.com.yoursjsu.servlet;
+package com.yoursjsu.servlet;
 import com.yoursjsu.dao.CredentialDAO;
 import com.yoursjsu.dao.UserDAO;
 import com.yoursjsu.model.User;

@@ -1,4 +1,4 @@
-package src.main.java.com.yoursjsu.servlet;
+package com.yoursjsu.servlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

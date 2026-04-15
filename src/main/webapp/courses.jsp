@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.yoursjsu.model.User" %>
+<%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +14,12 @@
         <div class="nav-brand">YourSJSU</div>
         <div class="nav-center">Courses</div>
         <div class="nav-right">
-        
+        	<%
+                User user = (User) session.getAttribute("user");
+                if (user != null) {
+            %>
+                <span class="nav-user"><%= user.getFirstName() %> <%= user.getLastName() %></span>
+            <% } %>
             <form action="${pageContext.request.contextPath}/logout" method="post" class="nav-logout-form">
                 <button type="submit" class="btn-logout">Sign Out</button>
             </form>
@@ -44,41 +51,53 @@
 
     <main class="dashboard-content">
 		
-        <!-- Example dashboard content -->
         <section class="card">
-		    <h2>My Courses</h2>
-
+        	<h2>My Courses</h2>
+			
+			<%
+				    List<String> sections = (List<String>) request.getAttribute("sections");
+			%>
+			<ul class="course-list" id="sectionList">
+				
+				<%
+				    if (sections != null) {
+				        for (String s : sections) {
+				%>
+				    <li class="course-item">
+				    	<span class="course-name"><%=s%></span>
+				    	<button class="remove-btn" onclick="removeCourse(this)">🗑️</button>
+				    </li>
+				<%
+				        }
+				    }
+				%>
+				<script>
+					function removeCourse(btn) {
+			    		btn.parentElement.remove();
+					}
+			    </script>
+			
+			</ul>
+		</section>
+		<section class="card">
+		    <h2>Courses Taken</h2>
+			
+			<%
+				    List<String> courses = (List<String>) request.getAttribute("courses");
+			%>
 			<ul class="course-list" id="courseList">
-			
-			    <li class="course-item">
-			        <span class="course-name">Introduction to Java</span>
-			        <button class="remove-btn" onclick="removeCourse(this)">-</button>
-			    </li>
-			
-			    <li class="course-item">
-			        <span class="course-name">Web Development</span>
-			        <button class="remove-btn" onclick="removeCourse(this)">-</button>
-			    </li>
-			
-			    <li class="course-item">
-			        <span class="course-name">Database Systems</span>
-			        <button class="remove-btn" onclick="removeCourse(this)">-</button>
-			    </li>
-			
-			    <li class="course-item">
-			        <span class="course-name">Introduction to Database Management</span>
-			        <button class="remove-btn" onclick="removeCourse(this)">-</button>
-			    </li>
-			
-			    <li class="course-item">
-			        <span class="course-name">Introduction to Data Structures</span>
-			        <button class="remove-btn" onclick="removeCourse(this)">-</button>
-			    </li>
-			
-			    <li class="course-item">
-			        <span class="course-name">Meteorology</span>
-			        <button class="remove-btn" onclick="removeCourse(this)">-</button>
-			    </li>
+				
+				<%
+				    if (courses != null) {
+				        for (String c : courses) {
+				%>
+				    <li class="course-item">
+				    	<span class="course-name"><%=c%></span>
+				    </li>
+				<%
+				        }
+				    }
+				%>
 			
 			</ul>
 		</section>

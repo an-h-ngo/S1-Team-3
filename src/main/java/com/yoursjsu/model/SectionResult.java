@@ -1,4 +1,4 @@
-package src.main.java.com.yoursjsu.model;
+package com.yoursjsu.model;
 
 public class SectionResult {
     private int sectionId;
