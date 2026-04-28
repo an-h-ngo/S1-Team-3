@@ -67,9 +67,9 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 ## Implemented Functional Requirements (Updated 4/14/2026)
 
 - [Vincent] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
-- FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
+- [Nathan] FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
 - [Vincent] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
-- FR-S7: View Schedule - Students can view the schedule for this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
+- [Nathan] FR-S7: View Schedule - Students can view the schedule for this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
 - [Vincent] FR-S10: Password change - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
 ## Future Work
