@@ -64,6 +64,13 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Set **Compiler compliance level** to **1.8**
 - Right-click the project > **Properties** > **Java Build Path** > **Libraries**
 - Under **Classpath**, click **Add Library** > **Server Runtime** > select **Apache Tomcat v9.0**
+- In **Eclipse**, click **Project** > **Clean**, select **YourSJSU** > **OK**, wait until the bottom-right build progress is done
+- Open file explorer to C:\tomcat8\bin\ and paste the files from `\YourSJSU\build\classes\com\` to `C:\tomcat8\webapps\YourSJSU\WEB-INF\classes\com\`
+- Then copy the files from `\YourSJSU\src\main\webapp\` to `C:\tomcat8\webapps\YourSJSU\`
+- Lastly, copy the files from `YourSJSU\src\main\webapp\css\style.css` to `C:\tomcat8\webapps\YourSJSU\css\style.css`
+- Run **startup.bat** in `C:\tomcat8\bin\`
+- Go to **http://localhost:8080/YourSJSU/** and the login page should load
+- Run **shutdown.bat** in `C:\tomcat8\bin\` to shutdown the tomcat server
 ## Implemented Functional Requirements (Updated 4/28/2026)
 
 - [Vincent] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.

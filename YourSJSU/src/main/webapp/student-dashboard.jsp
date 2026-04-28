@@ -24,6 +24,20 @@
         </div>
     </nav>
 
+    <nav class="nav-bar1">
+        <div class="nav-link active" onclick="goTo('/student-dashboard')">Student Dashboard</div>
+        <div class="nav-link" onclick="goTo('/courses')">Courses</div>
+        <div class="nav-link" onclick="goTo('/schedule')">Term Schedule</div>
+        <div class="nav-link" onclick="goTo('/transcript')">Transcript</div>
+        <div class="nav-link" onclick="goTo('/financial-summary')">Financial Summary</div>
+    </nav>
+
+    <script>
+        function goTo(path) {
+            window.location.href = "<%= request.getContextPath() %>" + path;
+        }
+    </script>
+
     <main class="dashboard-content">
         <h1>Student Dashboard</h1>
         <% if (user != null) { %>
@@ -32,6 +46,7 @@
 
         <div class="dashboard-actions">
             <a href="${pageContext.request.contextPath}/search-courses" class="btn-action">Search Courses</a>
+            <a href="${pageContext.request.contextPath}/financial-summary" class="btn-action">Financial Summary</a>
             <a href="${pageContext.request.contextPath}/change-password" class="btn-action">Change Password</a>
         </div>
     </main>
