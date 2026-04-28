@@ -66,11 +66,12 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Under **Classpath**, click **Add Library** > **Server Runtime** > select **Apache Tomcat v9.0**
 ## Implemented Functional Requirements (Updated 4/14/2026)
 
-- FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
+- [Vincent] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
 - FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
-- FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
-- FR-S7: View Schedule - Students can view schedule this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
-- FR-S10: Password change - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
+- [Vincent] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
+- FR-S7: View Schedule - Students can view the schedule for this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
+- [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
+- [Vincent] FR-S10: Password change - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
 ## Future Work
 
 - Real bcrypt password verification (add jBCrypt library)
@@ -79,4 +80,3 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Student dashboard content (enrollments, holds, schedule)
 - Faculty dashboard content (sections taught, department info)
 - Course enrollment (FR-S4)
-- Financial records view (FR-S9)
