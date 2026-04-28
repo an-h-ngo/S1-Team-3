@@ -64,7 +64,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Set **Compiler compliance level** to **1.8**
 - Right-click the project > **Properties** > **Java Build Path** > **Libraries**
 - Under **Classpath**, click **Add Library** > **Server Runtime** > select **Apache Tomcat v9.0**
-## Implemented Functional Requirements (Updated 4/14/2026)
+## Implemented Functional Requirements (Updated 4/28/2026)
 
 - [Vincent] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
 - [Nathan] FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
