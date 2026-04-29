@@ -29,7 +29,6 @@
         </div>
     </nav>
     <nav class="nav-bar1">
-    Reset Password, Financial Summary, and Course Search
         <div class="nav-link" onclick="goTo('/student-dashboard')">
             Student Dashboard
         </div>
@@ -45,7 +44,7 @@
         <div class="nav-link" onclick="goTo('/financial-summary')">
             Financial Summary
         </div>
-        <div class="nav-link" onclick="goTo('/password-reset')">
+        <div class="nav-link" onclick="goTo('/change-password')">
             Reset Password
         </div>
         
@@ -104,19 +103,39 @@
                     <%
                         double totalPoints = 0;
                         int totalUnits = 0;
-
+                        
                         for (ClassStatus row : transcript.getClassStatusList()) {
                             String grade = row.getLetterGrade();
                             int units = row.getUnits();
                             if (grade != null){
 								totalUnits += units;
+								switch(grade){
+									case "A":
+									case "A-":
+									case "A+":
+										totalPoints += 4.0 * units;
+										break;
+									case "B":
+									case "B-":
+									case "B+":
+										totalPoints += 3.0 * units;
+										break;
+									case "C":
+									case "C-":
+									case "C+":
+										totalPoints += 2.0 * units;
+										break;
+									case "D":
+									case "D-":
+									case "D+":
+										totalPoints += 1.0 * units;
+										break;
+								}
+								
                             } else {
                             	grade = "In Progress";
                             }
 							
-                            // calculate grade points
-                            double gradePoint = 0;
-
                     %>
                     <tr>
 

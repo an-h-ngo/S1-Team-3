@@ -715,3 +715,53 @@ body {
     color: #b71c1c;
     font-weight: 600;
 }
+.card {
+	text-align: center;
+}
+.transcript-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    
+}
+
+.transcript-table th,
+.transcript-table td {
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    word-wrap: break-word;
+}
+
+.transcript-table th {
+    background-color: #0055A2;
+    color: white;
+    font-weight: 600;
+}
+
+.transcript-table th:first-child,
+.transcript-table td:first-child {
+    width: 100%;
+    text-align: left;
+}
+
+.transcript-table tbody tr:hover {
+    background-color: #eef5ff;
+}
+
+.transcript-table tbody tr:nth-child(even) {
+    background-color: #f4f6f9;
+}
+
+.gpa-summary {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.8;
+}
+
+.gpa-summary p strong {
+    color: #0055A2;
+}
