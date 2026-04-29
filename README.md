@@ -76,7 +76,9 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - [Vincent] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
 - [Nathan] FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
 - [Vincent] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
+- [Nathan] FR-S6: Drop a Course - Students can drop a course by clicking the garbage button next to the class name in the courses page.
 - [Nathan] FR-S7: View Schedule - Students can view the schedule for this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
+- [Nathan] FR-S8: View Transcript - Students can view their GPA, classes completed, and grades.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
 - [Vincent] FR-S10: Password change - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
 ## Future Work
