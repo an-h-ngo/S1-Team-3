@@ -11,6 +11,7 @@
 <body class="dashboard-page">
     <nav class="navbar">
         <div class="nav-brand">YourSJSU</div>
+		<div class="nav-center">Student Dashboard</div>
         <div class="nav-right">
             <%
                 User user = (User) session.getAttribute("user");
@@ -23,15 +24,26 @@
             </form>
         </div>
     </nav>
-
     <nav class="nav-bar1">
-        <div class="nav-link active" onclick="goTo('/student-dashboard')">Student Dashboard</div>
-        <div class="nav-link" onclick="goTo('/courses')">Courses</div>
-        <div class="nav-link" onclick="goTo('/schedule')">Term Schedule</div>
-        <div class="nav-link" onclick="goTo('/transcript')">Transcript</div>
-        <div class="nav-link" onclick="goTo('/financial-summary')">Financial Summary</div>
+        <div class="nav-link" onclick="goTo('/student-dashboard')">
+            Student Dashboard
+        </div>
+        <div class="nav-link" onclick="goTo('/search-courses')">
+            Courses
+        </div>
+        <div class="nav-link" onclick="goTo('/schedule')">
+            Term Schedule
+        </div>
+        <div class="nav-link" onclick="goTo('/transcript')">
+            Transcript
+        </div>
+        <div class="nav-link" onclick="goTo('/financial-summary')">
+            Financial Summary
+        </div>
+        <div class="nav-link" onclick="goTo('/change-password')">
+            Reset Password
+        </div>
     </nav>
-
     <script>
         function goTo(path) {
             window.location.href = "<%= request.getContextPath() %>" + path;
@@ -39,16 +51,43 @@
     </script>
 
     <main class="dashboard-content">
-        <h1>Student Dashboard</h1>
         <% if (user != null) { %>
             <p class="dashboard-subtitle">Welcome, <%= user.getFirstName() %>. You are logged in as a student.</p>
         <% } %>
-
         <div class="dashboard-actions">
-            <a href="${pageContext.request.contextPath}/search-courses" class="btn-action">Search Courses</a>
-            <a href="${pageContext.request.contextPath}/financial-summary" class="btn-action">Financial Summary</a>
-            <a href="${pageContext.request.contextPath}/change-password" class="btn-action">Change Password</a>
+    <a href="${pageContext.request.contextPath}/search-courses" class="btn-action">
+        <div class="icon icon-search">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6.5" cy="6.5" r="4"/>
+                <line x1="10" y1="10" x2="14" y2="14"/>
+            </svg>
         </div>
+        Search Courses
+    </a>
+    <a href="${pageContext.request.contextPath}/search-courses" class="btn-action">
+        <div class="icon icon-add">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                 stroke-width="1.5" stroke-linecap="round">
+                <rect x="2" y="2" width="12" height="12" rx="2"/>
+                <line x1="8" y1="5" x2="8" y2="11"/>
+                <line x1="5" y1="8" x2="11" y2="8"/>
+            </svg>
+        </div>
+        Add Classes
+    </a>
+    <a href="${pageContext.request.contextPath}/change-password" class="btn-action">
+        <div class="icon icon-pw">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="7" width="10" height="7" rx="1.5"/>
+                <path d="M5 7V5a3 3 0 0 1 6 0v2"/>
+                <circle cx="8" cy="10.5" r="1"/>
+            </svg>
+        </div>
+        Change Password
+    </a>
+</div>
     </main>
 </body>
 </html>

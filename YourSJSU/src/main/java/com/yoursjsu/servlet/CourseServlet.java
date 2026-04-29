@@ -1,4 +1,4 @@
-package com.yoursjsu.servlet;
+package YourSJSU.src.main.java.com.yoursjsu.servlet;
 
 import com.yoursjsu.dao.CourseDAO;
 import com.yoursjsu.dao.SectionDAO;

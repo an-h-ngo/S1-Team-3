@@ -1,4 +1,4 @@
-package com.yoursjsu.dao;
+package YourSJSU.src.main.java.com.yoursjsu.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SectionDAO {
 
-public static List<String> getSections(int userId){
+	public static List<String> getSections(int userId){
 		
 		List<String> sections = new ArrayList<>();
 		String sql = "SELECT user_id, course_title FROM section S\r\n"

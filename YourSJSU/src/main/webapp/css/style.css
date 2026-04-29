@@ -718,6 +718,24 @@ body {
 .card {
 	text-align: center;
 }
+.btn-add {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 30px;
+    text-align: center;
+}
+.btn-add:hover {
+    background: #27ae60;
+}
+.card {
+	text-align: center;
+}
 .transcript-table {
     width: 100%;
     border-collapse: collapse;
@@ -765,3 +783,226 @@ body {
 .gpa-summary p strong {
     color: #0055A2;
 }
+/* ── Search page ── */
+.search-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.search-content h1 {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+/* Search form */
+.search-form {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.search-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-row input,
+.search-row select {
+    flex: 1;
+    min-width: 140px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #111827;
+    background: #fff;
+}
+
+.search-row input:focus,
+.search-row select:focus {
+    outline: none;
+    border-color: #6b7280;
+    box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.15);
+}
+
+.btn-search {
+    height: 36px;
+    padding: 0 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+    color: #111827;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.btn-search:hover {
+    background: #f3f4f6;
+}
+
+/* Results table */
+.table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.results-table thead tr {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.results-table th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+.results-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    white-space: nowrap;
+}
+
+.results-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.results-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Status badges */
+.status-open {
+    background: #dcfce7;
+    color: #166534;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.status-waitlist {
+    background: #fef9c3;
+    color: #854d0e;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.status-closed {
+    background: #fee2e2;
+    color: #991b1b;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* Error / empty states */
+.error-message {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 1rem;
+    font-size: 14px;
+}
+
+.no-results {
+    color: #6b7280;
+    font-size: 14px;
+    padding: 1.5rem 0;
+}
+
+/* ── Dashboard content ── */
+.dashboard-content {
+    padding: 2rem 1.5rem;
+}
+
+.dashboard-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+/* Action card grid */
+.dashboard-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+.btn-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    text-decoration: none;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-action:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.btn-action::after {
+    content: "↗";
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+/* Icon badge */
+.btn-action .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: auto;
+}
+
+.icon-search { background: #E6F1FB; }
+.icon-search svg { stroke: #185FA5; }
+
+.icon-add    { background: #E1F5EE; }
+.icon-add svg { stroke: #0F6E56; }
+
+.icon-pw     { background: #EEEDFE; }
+.icon-pw svg { stroke: #534AB7; }

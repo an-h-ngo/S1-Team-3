@@ -1,4 +1,4 @@
-package com.yoursjsu.servlet;
+package YourSJSU.src.main.java.com.yoursjsu.servlet;
 import com.yoursjsu.dao.CredentialDAO;
 import com.yoursjsu.model.User;
 import javax.servlet.ServletException;

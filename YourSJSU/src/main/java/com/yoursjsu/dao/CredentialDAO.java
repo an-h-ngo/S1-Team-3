@@ -1,23 +1,16 @@
-package com.yoursjsu.dao;
+package YourSJSU.src.main.java.com.yoursjsu.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CredentialDAO {
-
-    // Looks up password on file for the user, credential table has one row per user, filter by user_id and get password column
     public String getPasswordHash(int userId) {
-
-        String sql =
-            "SELECT password_hash\n" +
-            "FROM   credential\n" +
-            "WHERE  user_id = ?";
+        String sql = "SELECT password_hash FROM credential WHERE user_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Fill in the ? with this user's id.
             stmt.setInt(1, userId);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -30,7 +23,7 @@ public class CredentialDAO {
         }
         return null;
     }
-
+    
     // Updates the credential table with the user's new password
     // This is called when the user runs the change-password form
     // Returns true if one row was changed, returns false if nothing changed

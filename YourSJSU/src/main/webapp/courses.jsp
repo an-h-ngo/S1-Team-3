@@ -97,7 +97,7 @@
         <div class="nav-link" onclick="goTo('/financial-summary')">
             Financial Summary
         </div>
-        <div class="nav-link" onclick="goTo('/password-reset')">
+        <div class="nav-link" onclick="goTo('/change-password')">
             Reset Password
         </div>
     </nav>

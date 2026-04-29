@@ -1,4 +1,4 @@
-package com.yoursjsu.model;
+package YourSJSU.src.main.java.com.yoursjsu.model;
 
 public class ClassStatus {
 	private String status;

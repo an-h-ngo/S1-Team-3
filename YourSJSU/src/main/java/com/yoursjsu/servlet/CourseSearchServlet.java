@@ -1,4 +1,4 @@
-package com.yoursjsu.servlet;
+package YourSJSU.src.main.java.com.yoursjsu.servlet;
 import com.yoursjsu.dao.CourseSearchDAO;
 import com.yoursjsu.model.SectionResult;
 import javax.servlet.ServletException;
@@ -19,40 +19,59 @@ public class CourseSearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Check if user is logged in
+        // checks session
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        // Reads the search boxes for course name and department num
+        // loads terms
+        List<String[]> terms = courseSearchDAO.getAllTerms();
+        request.setAttribute("terms", terms);
+
         String keyword = request.getParameter("keyword");
         String departmentCode = request.getParameter("departmentCode");
+        String courseNumber = request.getParameter("courseNumber");
+        String instructorName = request.getParameter("instructorName");
+        String termIdStr = request.getParameter("termId");
 
-        // Any searches submitted by user
-        boolean isSearch = (keyword != null || departmentCode != null);
+        boolean isSearch = (keyword != null || departmentCode != null
+                || courseNumber != null || instructorName != null || termIdStr != null);
 
         if (isSearch) {
-            // Pass the values back to the JSP so the form stays filled in
             request.setAttribute("keyword", keyword);
             request.setAttribute("departmentCode", departmentCode);
+            request.setAttribute("courseNumber", courseNumber);
+            request.setAttribute("instructorName", instructorName);
+            request.setAttribute("termId", termIdStr);
 
-            // Check if anything is typed
+            // checks to make sure there is some filter
             boolean hasAny = (keyword != null && !keyword.trim().isEmpty())
-                    || (departmentCode != null && !departmentCode.trim().isEmpty());
+                    || (departmentCode != null && !departmentCode.trim().isEmpty())
+                    || (courseNumber != null && !courseNumber.trim().isEmpty())
+                    || (instructorName != null && !instructorName.trim().isEmpty())
+                    || (termIdStr != null && !termIdStr.trim().isEmpty());
 
             if (!hasAny) {
-                request.setAttribute("error", "Please enter a search term.");
+                request.setAttribute("error", "Please enter at least one search criterion.");
             } else {
-                // Run the search and stash the results for the JSP
-                List<SectionResult> results = courseSearchDAO.searchSections(keyword, departmentCode);
+                Integer termId = null;
+                if (termIdStr != null && !termIdStr.trim().isEmpty()) {
+                    try {
+                        termId = Integer.parseInt(termIdStr.trim());
+                    } catch (NumberFormatException e) {
+                        // ignores invalid id
+                    }
+                }
+
+                List<SectionResult> results = courseSearchDAO.searchSections(
+                        keyword, departmentCode, courseNumber, instructorName, termId);
                 request.setAttribute("results", results);
                 request.setAttribute("searched", true);
             }
         }
 
-        // render page
         request.getRequestDispatcher("/search-courses.jsp").forward(request, response);
     }
 }

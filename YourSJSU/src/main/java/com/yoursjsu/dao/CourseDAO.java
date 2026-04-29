@@ -1,4 +1,5 @@
-package com.yoursjsu.dao;
+package YourSJSU.src.main.java.com.yoursjsu.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -30,7 +30,7 @@
         <div class="nav-link" onclick="goTo('/student-dashboard')">
             Student Dashboard
         </div>
-        <div class="nav-link" onclick="goTo('/courses')">
+        <div class="nav-link" onclick="goTo('/search-courses')">
             Courses
         </div>
         <div class="nav-link" onclick="goTo('/schedule')">
@@ -42,7 +42,7 @@
         <div class="nav-link" onclick="goTo('/financial-summary')">
             Financial Summary
         </div>
-        <div class="nav-link" onclick="goTo('/password-reset')">
+        <div class="nav-link" onclick="goTo('/change-password')">
             Reset Password
         </div>
     </nav>

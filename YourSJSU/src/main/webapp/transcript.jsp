@@ -32,7 +32,7 @@
         <div class="nav-link" onclick="goTo('/student-dashboard')">
             Student Dashboard
         </div>
-        <div class="nav-link" onclick="goTo('/courses')">
+        <div class="nav-link" onclick="goTo('/search-courses')">
             Courses
         </div>
         <div class="nav-link" onclick="goTo('/schedule')">
