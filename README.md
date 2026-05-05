@@ -46,19 +46,23 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 ## Prerequisites
 
 - **Java 8+** installed
-- **Apache Tomcat 9** installed (e.g. at `C:\tomcat8`)
+- **Apache Tomcat 9** installed (e.g. at `C:\tomcat8` or `C:\tomcat9`)
 - **MySQL 9.6** running on `localhost:3306`
 - **Eclipse** for compiling the project
 ## Database Setup
 
 ```bash
   1. Open MySQL Workbench and connect to the local MySQL server
-  2. Run the full yoursjsu database script, which will create all the tables and sample data
+  2. Run the full YourSJSU database script, which will create all the tables and sample data
   2. Update src/main/java/com/yoursjsu/dao/DatabaseConnection.java with your MySQL Workbench password
 ```
 ## Deployment
-- Import the **YourSJSU** folder as an existing project in Eclipse
+- Import the **YourSJSU** folder as an existing project in Eclipse / IntelliJ
 - Edit the **DatabaseConnection.java** for your MySQL Workbench setup
+- **IMPORTANT — Source folder setup (so package declarations work for everyone):**
+  - **Eclipse:** right-click `src/main/java` in Project Explorer > **Build Path** > **Use as Source Folder**
+  - **IntelliJ:** right-click `src/main/java` in Project view > **Mark Directory as** > **Sources Root**
+  - All Java files MUST use packages like `package com.yoursjsu.dao;` (NOT `package YourSJSU.src.main.java.com.yoursjsu.dao;`). If your IDE auto-generates the long form, your source folder is wrong — fix it with the step above.
 - In Eclipse, right-click the **YourSJSU** project > **Properties** > **Java Compiler**
 - Enable **project specific settings**
 - Set **Compiler compliance level** to **1.8**
@@ -71,14 +75,14 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Run **startup.bat** in `C:\tomcat8\bin\`
 - Go to **http://localhost:8080/YourSJSU/**, and the login page should load
 - Run **shutdown.bat** in `C:\tomcat8\bin\` to shutdown the tomcat server
-## Implemented Functional Requirements (12/18) (Updated 5/5/2026)
+## Functional Requirements (12/18) (Updated 5/5/2026)
 
 - [Vincent] FR-S1: Authentication (Student) - Students must log in using their Student ID and password to access portal functions.
 - [Nathan] FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
 - [Vincent] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
 - [PENDING] FR-S4: Enroll in a Course - Students can add a course section to their schedule.
 - [PENDING] FR-S5: Join/Leave Waitlist - Students can join or drop a currently enrolled course within specified deadlines.
-- [Nathan] FR-S6: Drop a Course - Students can drop a course by clicking the garbage button next to the class name in the courses page.
+- [Vincent] FR-S6: Drop a Course - Students can drop a course by clicking the garbage button next to the class name in the courses page.
 - [Nathan] FR-S7: View Schedule - Students can view the schedule for this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
 - [Nathan] FR-S8: View Unofficial Transcript - Students can view their GPA, classes completed, and grades.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
