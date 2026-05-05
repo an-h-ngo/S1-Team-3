@@ -11,8 +11,9 @@ public class CourseSearchDAO {
     // Returns all the terms in the database in descending order
     public List<String[]> getAllTerms() {
         List<String[]> terms = new ArrayList<>();
-
-        String sql = "SELECT term_id, term_name FROM term ORDER BY term_id DESC";
+        String sql = "SELECT term_id, term_name " +
+                "FROM term " +
+                "ORDER BY term_id DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);

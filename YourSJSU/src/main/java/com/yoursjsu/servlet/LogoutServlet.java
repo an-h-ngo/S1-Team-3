@@ -1,4 +1,5 @@
 package com.yoursjsu.servlet;
+import com.yoursjsu.dao.SessionDAO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import java.io.IOException;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
+    private SessionDAO sessionDAO = new SessionDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -16,6 +18,11 @@ public class LogoutServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
+            if (!CsrfUtil.isValid(request)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            sessionDAO.invalidateSession((String) session.getAttribute("dbSessionToken"));
             session.invalidate();
         }
         response.sendRedirect(request.getContextPath() + "/login");
@@ -24,6 +31,6 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
     }
 }

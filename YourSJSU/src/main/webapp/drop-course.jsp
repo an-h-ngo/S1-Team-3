@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Drop a Course</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
 </head>
 <body class="dashboard-page">
     <nav class="navbar">
@@ -21,6 +21,7 @@
                 <span class="nav-user"><%= user.getFirstName() %> <%= user.getLastName() %></span>
             <% } %>
             <form action="${pageContext.request.contextPath}/logout" method="post" class="nav-logout-form">
+                <input type="hidden" name="csrfToken" value="${csrfToken}">
                 <button type="submit" class="btn-logout">Sign Out</button>
             </form>
         </div>
@@ -93,6 +94,7 @@
                                       onsubmit="return confirmDrop('<%= label.replace("'", "") %>');"
                                       style="margin:0">
                                     <input type="hidden" name="sectionId" value="<%= r.getSectionId() %>">
+                                    <input type="hidden" name="csrfToken" value="${csrfToken}">
                                     <button type="submit" class="btn-drop">Drop</button>
                                 </form>
                             </td>

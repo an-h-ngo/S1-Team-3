@@ -53,9 +53,23 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 ```bash
   1. Open MySQL Workbench and connect to the local MySQL server
-  2. Run the full YourSJSU database script, which will create all the tables and sample data
-  2. Update src/main/java/com/yoursjsu/dao/DatabaseConnection.java with your MySQL Workbench password
+  2. Run the full yoursjsu database script which will create all the tables and sample data
+  3. Optional: run database/demo_accounts.sql to add safe local demo accounts
+  4. Update src/main/java/com/yoursjsu/dao/DatabaseConnection.java with your MySQL Workbench password
 ```
+
+## Demo Accounts
+
+For local testing, run `database/demo_accounts.sql` after loading the main database dump. It creates safe dummy accounts only:
+
+| Role | Email | Password |
+|---|---|---|
+| Student | `student@sjsu.edu` | `password123` |
+| Faculty | `faculty@sjsu.edu` | `password123` |
+| Student + Faculty | `ta@sjsu.edu` | `password123` |
+
+Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`. Do not commit real student, faculty, or team member credentials in README or SQL setup files.
+
 ## Deployment
 - Import the **YourSJSU** folder as an existing project in Eclipse / IntelliJ
 - Edit the **DatabaseConnection.java** for your MySQL Workbench setup
@@ -75,23 +89,51 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Run **startup.bat** in `C:\tomcat8\bin\`
 - Go to **http://localhost:8080/YourSJSU/**, and the login page should load
 - Run **shutdown.bat** in `C:\tomcat8\bin\` to shutdown the tomcat server
-## Functional Requirements (12/18) (Updated 5/5/2026)
 
-- [Vincent] FR-S1: Authentication (Student) - Students must log in using their Student ID and password to access portal functions.
-- [Nathan] FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
-- [Vincent] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
-- [PENDING] FR-S4: Enroll in a Course - Students can add a course section to their schedule.
-- [PENDING] FR-S5: Join/Leave Waitlist - Students can join or drop a currently enrolled course within specified deadlines.
-- [Vincent] FR-S6: Drop a Course - Students can drop a course by clicking the garbage button next to the class name in the courses page.
-- [Nathan] FR-S7: View Schedule - Students can view the schedule for this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
-- [Nathan] FR-S8: View Unofficial Transcript - Students can view their GPA, classes completed, and grades.
+## Demo Checklist
+
+1. Start Tomcat and open `/YourSJSU/login`.
+2. Log in with the dummy student account from `database/demo_accounts.sql`.
+3. Verify the student dashboard shows academic status, current enrollments, and waitlists.
+4. Search for course offerings and verify results show seats, waitlist counts, status, and registration actions.
+5. Enroll in an open section and verify the confirmation message and schedule update.
+6. Join a waitlist for a full section and verify the waitlist confirmation.
+7. Drop an enrolled class and verify it leaves the active schedule.
+8. Re-enroll before the registration close deadline and verify prior `dropped_at` history remains in the database.
+9. View transcript and verify completed records show readable term names.
+10. View financial summary and filter by term.
+11. Change password and verify same-password updates are rejected.
+12. Log out, then log in with the dummy faculty account and verify the faculty dashboard.
+
+## Implemented Functional Requirements (Updated 5/4/2026)
+
+- [Vincent, An] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out. Passwords are verified with bcrypt, legacy/plain passwords are upgraded after successful login, authenticated requests are backed by the database `session` table, protected JSPs are guarded by an auth filter, dual-role users choose whether to continue as student or faculty, can switch roles during a session, and pages are restricted by the active role.
+- [Nathan, An] FR-S2: View Student Dashboard - Students can view hold status, registration status, active enrollments, and active waitlists from the database.
+- [Vincent, An] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria. Search results include live enrollment/waitlist counts and registration actions.
+- [An] FR-S4: Enroll in a Section - Students can enroll in open sections after eligibility, same-course/same-term duplicate prevention, waitlist conflict, capacity, and registration window checks. Enrollment asks for confirmation and supports re-enrollment before the term registration close deadline.
+- [An] FR-S5: Join a Waitlist - Students can join a waitlist when a section is full, registration is open, prerequisites are satisfied, no same-course enrollment conflict exists, and waitlist capacity remains. Waitlist requests ask for confirmation before submission.
+- [Nathan, An] FR-S6: Drop a Course - Students can drop an enrolled course through a transactional server-side update that marks the enrollment dropped, records the drop timestamp when the term deadline allows it, and automatically promotes the earliest eligible waitlisted student when a seat opens. Drop asks for confirmation before submission.
+- [Nathan, An] FR-S7: View Schedule - Students can view their current and completed courses with section meeting details.
+- [Nathan, An] FR-S8: View Transcript - Students can view their GPA, completed classes, grades, and term names. Dropped in-progress classes remain in the database but are not shown on the transcript.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
-- [Vincent] FR-S10: Change Password (Student) - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
-- [Vincent] FR-D1: Authentication (Faculty) - Faculty must log in using their Staff ID and password to access faculty portal functions.
-- [PENDING] FR-D2: View Student’s Profile - Faculty can view enrolled students’ profiles in the database.
-- [Vincent] FR-D3: Lift/Place Holds - Faculty staff can alter the hold status on students’ profiles.
-- [Vincent] FR-D4: Denying/Granting Access to Students - Faculty staff can change student account settings, such as placing holds or deactivating their accounts.
-- [PENDING] FR-D5: Adding Classes - Faculty can add new classes to the database.
-- [PENDING] FR-D6: Removing Classes - Faculty can remove preexisting classes from the database.
-- [PENDING] FR-D7: Update Course Information - Faculty can update preexisting classes from the database.
-- [Vincent] FR-D8: Change Password (Faculty) - Faculty are able to change their password.
+- [Vincent, An] FR-S10: Password change - Users can change their password, which stores a bcrypt hash, updates the last-changed timestamp, rejects same-password updates, invalidates the web session, and redirects them to login.
+- [An] FR-F1: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
+
+## Final Functional Requirement Status
+
+| PDF Requirement | Implemented By | Main Files/Pages | Status | Notes |
+|---|---|---|---|---|
+| 2.1 Authentication Login/Logout | Vincent, An | LoginServlet, LogoutServlet, RoleSelectionServlet, RoleUtil, AuthFilter, SessionDAO, PasswordUtil, login.jsp, select-role.jsp | Implemented | Uses Java HttpSession plus the database `session` table. Verifies bcrypt passwords and upgrades legacy/plain passwords after successful login. Protected JSPs are guarded by a filter, state-changing forms use CSRF tokens, dual-role users choose active student or faculty role after login, can switch roles during a session, and protected pages enforce that role. |
+| 2.2 Change/Reset Password | Vincent, An | ChangePasswordServlet, CredentialDAO, PasswordUtil, change-password.jsp | Implemented | Stores bcrypt password hashes, updates `last_changed`, rejects same-password updates, invalidates the web session, and uses role-aware navigation. |
+| 2.3 View Student Academic Status | Nathan, An | StudentDashboardServlet, DashboardDAO, student-dashboard.jsp | Implemented | Shows hold status, registration status, enrollments, and waitlists. |
+| 2.4 Search Course Offerings | Vincent, An | CourseSearchDAO, CourseSearchServlet, search-courses.jsp | Implemented | Includes term, department, course number, title, instructor, seat, and waitlist data. |
+| 2.5 Enroll in a Section | An | RegistrationDAO, EnrollSectionServlet, search-courses.jsp | Implemented | Checks eligibility, same-section duplicates, same-course/same-term duplicates, active waitlist conflicts, section capacity, and the term registration window. Enrollment asks for confirmation. Re-enrollment after a drop is allowed before `term.registration_close_at`; `enrolled_at` is updated while prior `dropped_at` is preserved as history. |
+| 2.6 Join a Waitlist | An | RegistrationDAO, JoinWaitlistServlet, search-courses.jsp | Implemented | Checks eligibility, prerequisites, same-course enrollment conflicts, active enrollment/waitlist conflicts, waitlist capacity, and the term registration window. Waitlist requests ask for confirmation. |
+| 2.7 Drop an Enrolled Section | Nathan, An | RegistrationDAO, DropCourseServlet, schedule.jsp | Implemented | Updates database status to `dropped`, sets `dropped_at` if drop deadline has not passed, and promotes the earliest eligible waitlisted student in the same transaction when a seat opens. Drop asks for confirmation. If a student re-enrolls later, `status` is the source of truth and `dropped_at < enrolled_at` indicates prior drop/re-add history. |
+| 2.8 View Grades/Academic Record | Nathan, An | TranscriptDAO, TranscriptServlet, ClassStatus, transcript.jsp | Implemented | Displays completed grade history from enrollment records with readable term names; dropped in-progress classes are excluded from transcript display. |
+| 2.9 View Financial Records | Vincent | FinancialDAO, FinancialSummaryServlet, financial-summary.jsp | Implemented | Shows charges, payments, balance, and term filter. |
+| 2.10 Faculty Teaching and Organizational Access | An | FacultyDAO, FacultyDashboardServlet, faculty-dashboard.jsp | Implemented | Shows title, department, assigned sections, and enrolled counts. |
+
+## Future Work
+
+- Admin screens for assigning faculty, courses, and sections

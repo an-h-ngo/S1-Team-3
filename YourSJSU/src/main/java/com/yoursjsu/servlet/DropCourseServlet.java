@@ -1,74 +1,70 @@
 package com.yoursjsu.servlet;
+
 import com.yoursjsu.dao.EnrollmentDAO;
+import com.yoursjsu.dao.RegistrationDAO;
 import com.yoursjsu.model.SectionResult;
 import com.yoursjsu.model.User;
+import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/drop-course")
 public class DropCourseServlet extends HttpServlet {
-
     private EnrollmentDAO enrollmentDAO = new EnrollmentDAO();
+    private RegistrationDAO registrationDAO = new RegistrationDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // userh as to be logged in
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        User user = RoleUtil.requireStudent(request, response);
+        if (user == null) {
             return;
         }
 
-        User user = (User) session.getAttribute("user");
-
-        // Pull the list of currently enrolled sections
         List<SectionResult> enrolled = enrollmentDAO.getEnrolledSections(user.getUserId());
         request.setAttribute("enrolled", enrolled);
-
         request.getRequestDispatcher("/drop-course.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // check for log in
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        User user = RoleUtil.requireStudent(request, response);
+        if (user == null) {
+            return;
+        }
+        if (!CsrfUtil.isValid(request)) {
+            response.sendRedirect(request.getContextPath() + "/schedule?error=" + url("Your session expired. Please try again."));
             return;
         }
 
-        User user = (User) session.getAttribute("user");
-
-        // Parse the section ID the student wants to drop
-        String sectionIdStr = request.getParameter("sectionId");
-        if (sectionIdStr == null || sectionIdStr.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/drop-course");
+        Integer sectionId = parseSectionId(request);
+        if (sectionId == null) {
+            response.sendRedirect(request.getContextPath() + "/schedule?error=Invalid section selected.");
             return;
         }
 
-        int sectionId;
+        RegistrationDAO.DropResult result = registrationDAO.drop(user.getUserId(), sectionId);
+        if (result.isSuccess()) {
+            response.sendRedirect(request.getContextPath() + "/schedule?success=" + url(result.getSuccessMessage()));
+        } else {
+            response.sendRedirect(request.getContextPath() + "/schedule?error=" + url(result.getError()));
+        }
+    }
+
+    private Integer parseSectionId(HttpServletRequest request) {
         try {
-            sectionId = Integer.parseInt(sectionIdStr.trim());
+            return Integer.parseInt(request.getParameter("sectionId"));
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/drop-course");
-            return;
+            return null;
         }
+    }
 
-        // Try to drop the course. The DAO's UPDATE only succeeds if the user if enrolled in that setion
-        boolean dropped = enrollmentDAO.dropCourse(user.getUserId(), sectionId);
-
-        // dropped = 1 = success
-        // dropped = 0 = nothing changed
-        response.sendRedirect(request.getContextPath() + "/drop-course?dropped=" + (dropped ? "1" : "0"));
+    private String url(String value) throws IOException {
+        return java.net.URLEncoder.encode(value, "UTF-8");
     }
 }

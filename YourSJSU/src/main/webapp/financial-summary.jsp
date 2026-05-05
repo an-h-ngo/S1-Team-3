@@ -10,163 +10,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Financial Summary</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
 </head>
 <body class="dashboard-page">
-    <nav class="navbar">
-        <div class="nav-brand">YourSJSU</div>
-        <div class="nav-right">
-            <%
-                User user = (User) session.getAttribute("user");
-                if (user != null) {
-            %>
-                <span class="nav-user"><%= user.getFirstName() %> <%= user.getLastName() %></span>
-            <% } %>
-            <form action="${pageContext.request.contextPath}/logout" method="post" class="nav-logout-form">
-                <button type="submit" class="btn-logout">Sign Out</button>
+<%
+    User user = (User) session.getAttribute("user");
+    List<String[]> terms = (List<String[]>) request.getAttribute("terms");
+    String selectedTermId = (String) request.getAttribute("selectedTermId");
+    List<Charge> charges = (List<Charge>) request.getAttribute("charges");
+    List<Payment> payments = (List<Payment>) request.getAttribute("payments");
+    BigDecimal balance = (BigDecimal) request.getAttribute("balance");
+    List<Charge> holds = (List<Charge>) request.getAttribute("holds");
+    boolean owingMoney = balance != null && balance.compareTo(BigDecimal.ZERO) > 0;
+    String userInitials = user != null && user.getFirstName() != null && user.getLastName() != null && user.getFirstName().length() > 0 && user.getLastName().length() > 0
+            ? (user.getFirstName().substring(0, 1) + user.getLastName().substring(0, 1)).toUpperCase()
+            : "SJ";
+%>
+    <div class="portal-shell">
+        <aside class="portal-rail" aria-label="Portal navigation">
+            <div class="brand"><div class="seal">SJ</div><div><h1>YourSJSU</h1><span>Student Portal</span></div></div>
+            <nav class="portal-nav">
+                <a href="${pageContext.request.contextPath}/student-dashboard">Overview</a>
+                <a href="${pageContext.request.contextPath}/search-courses">Course Search</a>
+                <a href="${pageContext.request.contextPath}/schedule">Term Schedule</a>
+                <a href="${pageContext.request.contextPath}/transcript">Transcript</a>
+                <a class="active" href="${pageContext.request.contextPath}/financial-summary">Finances <span class="nav-badge"><%= owingMoney ? "Due" : "Clear" %></span></a>
+            </nav>
+            <details class="account-menu-wrap">
+                <summary class="rail-footer">
+                    <div class="footer-icon" aria-hidden="true"><%= userInitials %></div>
+                    <div class="footer-user">
+                        <strong><%= user != null ? user.getFirstName() + " " + user.getLastName() : "Student" %></strong>
+                        <span><%= user != null ? "ID " + user.getSjsuId() : "YourSJSU" %></span>
+                    </div>
+                </summary>
+                <div class="account-menu">
+                    <a href="${pageContext.request.contextPath}/change-password">Change password</a>
+                    <form action="${pageContext.request.contextPath}/logout" method="post">
+                        <input type="hidden" name="csrfToken" value="${csrfToken}">
+                        <button type="submit" class="signout-action">Sign out</button>
+                    </form>
+                </div>
+            </details>
+        </aside>
+
+        <main class="portal-main">
+            <header class="topbar">
+                <div class="title-block">
+                    <p>Student account - Charges and payments</p>
+                    <h1>Financial summary</h1>
+                </div>
+            </header>
+
+            <form method="get" action="${pageContext.request.contextPath}/financial-summary" class="term-filter-form">
+                <label for="termId" class="eyebrow">Filter by term</label>
+                <select id="termId" name="termId" onchange="this.form.submit()">
+                    <option value="">All Terms</option>
+                    <% if (terms != null) {
+                        for (String[] t : terms) {
+                            String selected = t[0].equals(selectedTermId) ? "selected" : "";
+                    %>
+                        <option value="<%= t[0] %>" <%= selected %>><%= t[1] %></option>
+                    <%  }
+                    } %>
+                </select>
             </form>
-        </div>
-    </nav>
 
-    <nav class="nav-bar1">
-        <div class="nav-link" onclick="goTo('/student-dashboard')">Student Dashboard</div>
-        <div class="nav-link" onclick="goTo('/courses')">Courses</div>
-        <div class="nav-link" onclick="goTo('/schedule')">Term Schedule</div>
-        <div class="nav-link" onclick="goTo('/transcript')">Transcript</div>
-        <div class="nav-link active" onclick="goTo('/financial-summary')">Financial Summary</div>
-    </nav>
+            <section class="balance-card <%= owingMoney ? "owing" : "zero" %>">
+                <div class="balance-label">Current Balance</div>
+                <div class="balance-amount"><%= balance != null ? String.format("$%,.2f", balance) : "$0.00" %></div>
+                <div class="balance-sub"><%= owingMoney ? "Total of pending and overdue charges." : "All clear; nothing owed." %></div>
+            </section>
 
-    <script>
-        function goTo(path) {
-            window.location.href = "<%= request.getContextPath() %>" + path;
-        }
-    </script>
-
-    <main class="financial-content">
-        <h1>Financial Summary</h1>
-
-        <%
-            List<String[]> terms          = (List<String[]>) request.getAttribute("terms");
-            String         selectedTermId = (String) request.getAttribute("selectedTermId");
-            List<Charge>   charges        = (List<Charge>) request.getAttribute("charges");
-            List<Payment>  payments       = (List<Payment>) request.getAttribute("payments");
-            BigDecimal     balance        = (BigDecimal) request.getAttribute("balance");
-            List<Charge>   holds          = (List<Charge>) request.getAttribute("holds");
-
-            boolean owingMoney = balance != null && balance.compareTo(BigDecimal.ZERO) > 0;
-        %>
-
-        <!-- Term filter dropdown -->
-        <form method="get" action="${pageContext.request.contextPath}/financial-summary" class="term-filter-form">
-            <label for="termId">Filter by term:</label>
-            <select id="termId" name="termId" onchange="this.form.submit()">
-                <option value="">All Terms</option>
-                <% if (terms != null) {
-                    for (String[] t : terms) {
-                        String selected = t[0].equals(selectedTermId) ? "selected" : "";
-                %>
-                    <option value="<%= t[0] %>" <%= selected %>><%= t[1] %></option>
-                <%  }
-                   } %>
-            </select>
-        </form>
-
-        <!-- Current Balance card -->
-        <section class="balance-card <%= owingMoney ? "owing" : "zero" %>">
-            <div class="balance-label">Current Balance</div>
-            <div class="balance-amount">
-                <%= balance != null ? String.format("$%,.2f", balance) : "$0.00" %>
-            </div>
-            <% if (!owingMoney) { %>
-                <div class="balance-sub">All clear &mdash; nothing owed.</div>
-            <% } else { %>
-                <div class="balance-sub">Total of pending and overdue charges.</div>
-            <% } %>
-        </section>
-
-        <!-- Financial Holds (overdue charges) -->
-        <section class="financial-section">
-            <h2>Financial Holds</h2>
-            <% if (holds == null || holds.isEmpty()) { %>
-                <p class="no-holds">No financial holds on your account.</p>
-            <% } else { %>
-                <ul class="holds-list">
-                    <% for (Charge h : holds) { %>
-                        <li class="hold-item">
-                            <div class="hold-desc"><%= h.getDescription() %></div>
-                            <div class="hold-meta">
-                                <span><%= h.getTermName() %></span>
-                                <span class="hold-amount"><%= String.format("$%,.2f", h.getAmount()) %></span>
-                            </div>
-                        </li>
+            <section class="grid two-column">
+                <article class="financial-section">
+                    <h2>Financial holds</h2>
+                    <% if (holds == null || holds.isEmpty()) { %>
+                        <p class="no-holds">No financial holds on your account.</p>
+                    <% } else { %>
+                        <ul class="holds-list">
+                            <% for (Charge h : holds) { %>
+                                <li class="hold-item">
+                                    <div>
+                                        <h4><%= h.getDescription() %></h4>
+                                        <p><%= h.getTermName() %></p>
+                                    </div>
+                                    <span class="pill red"><%= String.format("$%,.2f", h.getAmount()) %></span>
+                                </li>
+                            <% } %>
+                        </ul>
                     <% } %>
-                </ul>
-            <% } %>
-        </section>
+                </article>
 
-        <!-- Charge Breakdown -->
-        <section class="financial-section">
-            <h2>Charge Breakdown</h2>
-            <% if (charges == null || charges.isEmpty()) { %>
-                <p class="no-results">No charges on record.</p>
-            <% } else { %>
-                <div class="table-wrapper">
-                    <table class="results-table">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Term</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Posted</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Charge c : charges) {
-                                String statusClass = "status-" + c.getStatus();
-                            %>
-                                <tr>
-                                    <td><%= c.getDescription() %></td>
-                                    <td><%= c.getTermName() %></td>
-                                    <td><%= String.format("$%,.2f", c.getAmount()) %></td>
-                                    <td><span class="<%= statusClass %>"><%= c.getStatus().toUpperCase() %></span></td>
-                                    <td><%= c.getPostedAt() %></td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            <% } %>
-        </section>
+                <article class="financial-section">
+                    <h2>Account status</h2>
+                    <div class="list">
+                        <div class="row"><div><h4>Payment standing</h4><p><%= owingMoney ? "A balance is currently due." : "Your account has no outstanding balance." %></p></div><span class="pill <%= owingMoney ? "gold" : "green" %>"><%= owingMoney ? "Due" : "Clear" %></span></div>
+                        <div class="row"><div><h4>Financial holds</h4><p><%= holds != null ? holds.size() : 0 %> hold records found.</p></div><span class="pill <%= holds != null && !holds.isEmpty() ? "red" : "green" %>"><%= holds != null && !holds.isEmpty() ? "Review" : "No holds" %></span></div>
+                    </div>
+                </article>
+            </section>
 
-        <!-- Payment History -->
-        <section class="financial-section">
-            <h2>Payment History</h2>
-            <% if (payments == null || payments.isEmpty()) { %>
-                <p class="no-results">No payments on record.</p>
-            <% } else { %>
-                <div class="table-wrapper">
-                    <table class="results-table">
-                        <thead>
-                            <tr>
-                                <th>Term</th>
-                                <th>Amount</th>
-                                <th>Paid</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Payment p : payments) { %>
-                                <tr>
-                                    <td><%= p.getTermName() %></td>
-                                    <td><%= String.format("$%,.2f", p.getAmount()) %></td>
-                                    <td><%= p.getPaidAt() %></td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            <% } %>
-        </section>
-    </main>
+            <section class="financial-section" style="margin-top:16px">
+                <h2>Charge breakdown</h2>
+                <% if (charges == null || charges.isEmpty()) { %>
+                    <p class="no-results">No charges on record.</p>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table class="results-table">
+                            <thead><tr><th>Description</th><th>Term</th><th>Amount</th><th>Status</th><th>Posted</th></tr></thead>
+                            <tbody>
+                                <% for (Charge c : charges) {
+                                    String statusClass = "status-" + c.getStatus();
+                                %>
+                                    <tr>
+                                        <td><%= c.getDescription() %></td>
+                                        <td><%= c.getTermName() %></td>
+                                        <td class="mono"><%= String.format("$%,.2f", c.getAmount()) %></td>
+                                        <td><span class="<%= statusClass %>"><%= c.getStatus().toUpperCase() %></span></td>
+                                        <td><%= c.getPostedAt() %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </section>
+
+            <section class="financial-section">
+                <h2>Payment history</h2>
+                <% if (payments == null || payments.isEmpty()) { %>
+                    <p class="no-results">No payments on record.</p>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table class="results-table">
+                            <thead><tr><th>Term</th><th>Amount</th><th>Paid</th></tr></thead>
+                            <tbody>
+                                <% for (Payment p : payments) { %>
+                                    <tr><td><%= p.getTermName() %></td><td class="mono"><%= String.format("$%,.2f", p.getAmount()) %></td><td><%= p.getPaidAt() %></td></tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </section>
+        </main>
+    </div>
 </body>
 </html>

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Courses</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
     <style>
         .modal-overlay {
             display: none;
@@ -56,7 +56,7 @@
 <body class="dashboard-page">
 
     <!-- Confirmation Modal -->
-    <div id="confirmModal" class="modal-overlay">
+    <div id="confirmModal" class="modal-overlay" style="display:none">
         <div class="modal-box">
             <p>Are you sure you want to remove this course?</p>
             <div class="modal-buttons">
@@ -77,6 +77,7 @@
                 <span class="nav-user"><%= user.getFirstName() %> <%= user.getLastName() %></span>
             <% } %>
             <form action="${pageContext.request.contextPath}/logout" method="post" class="nav-logout-form">
+                <input type="hidden" name="csrfToken" value="${csrfToken}">
                 <button type="submit" class="btn-logout">Sign Out</button>
             </form>
         </div>
@@ -141,7 +142,7 @@
                 %>
                     <li class="course-item">
                         <span class="course-name"><%=s%></span>
-                        <button class="remove-btn" onclick="removeCourse(this)">🗑️</button>
+                        <button class="remove-btn" onclick="removeCourse(this)">Remove</button>
                     </li>
                 <%
                         }

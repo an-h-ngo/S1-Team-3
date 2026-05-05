@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Sign In</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
 </head>
 <body class="login-page">
     <div class="login-container">
         <div class="login-header">
+            <div class="seal" style="margin:0 auto 14px">SJ</div>
             <h1>YourSJSU</h1>
             <p>San Jose State University Portal</p>
         </div>
@@ -42,7 +43,7 @@
         </form>
 
         <div class="login-footer">
-            <p>CS 157A &mdash; Team 3</p>
+            <p>CS 157A - Team 3</p>
         </div>
     </div>
 </body>

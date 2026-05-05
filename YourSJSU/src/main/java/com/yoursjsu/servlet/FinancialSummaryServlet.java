@@ -32,14 +32,10 @@ public class FinancialSummaryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Must be logged in
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        User user = RoleUtil.requireStudent(request, response);
+        if (user == null) {
             return;
         }
-
-        User user = (User) session.getAttribute("user");
         int userId = user.getUserId();
 
         // Null = "all terms". Get term from url

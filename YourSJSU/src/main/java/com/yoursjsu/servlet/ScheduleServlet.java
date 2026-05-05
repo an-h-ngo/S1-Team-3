@@ -18,20 +18,18 @@ public class ScheduleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        
-
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        User user = RoleUtil.requireStudent(request, response);
+        if (user == null) {
             return;
         }
-        User user = (User) session.getAttribute("user");
         int userId = user.getUserId();
         List<Course> courses = ScheduleDAO.getCourses(userId);
         List<String> sections = SectionDAO.getSections(userId);
 
         request.setAttribute("sections", sections);
         request.setAttribute("courses", courses);
+        request.setAttribute("success", request.getParameter("success"));
+        request.setAttribute("error", request.getParameter("error"));
         request.getRequestDispatcher("/schedule.jsp").forward(request, response);
     }
     

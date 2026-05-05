@@ -22,14 +22,10 @@ public class TranscriptServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        
-
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        User user = RoleUtil.requireStudent(request, response);
+        if (user == null) {
             return;
         }
-        User user = (User) session.getAttribute("user");
         int userId = user.getUserId();
         Transcript transcript = TranscriptDAO.getSections(userId);
         request.setAttribute("transcript", transcript);
