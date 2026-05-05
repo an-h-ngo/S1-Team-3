@@ -42,11 +42,11 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 **Java:** Java 8
 
-**IDE:** Eclipse
+**IDE:** Eclipse/IntelliJ IDEA
 ## Prerequisites
 
 - **Java 8+** installed
-- **Apache Tomcat 9** installed (e.g. at `C:\tomcat8` or `C:\tomcat9`)
+- **Apache Tomcat 9** installed (e.g. at `C:\tomcat8`)
 - **MySQL 9.6** running on `localhost:3306`
 - **Eclipse** for compiling the project
 ## Database Setup
@@ -62,7 +62,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - **IMPORTANT — Source folder setup (so package declarations work for everyone):**
   - **Eclipse:** right-click `src/main/java` in Project Explorer > **Build Path** > **Use as Source Folder**
   - **IntelliJ:** right-click `src/main/java` in Project view > **Mark Directory as** > **Sources Root**
-  - All Java files MUST use packages like `package com.yoursjsu.dao;` (NOT `package YourSJSU.src.main.java.com.yoursjsu.dao;`). If your IDE auto-generates the long form, your source folder is wrong — fix it with the step above.
+  - All Java files MUST use packages like `package com.yoursjsu.dao;` (NOT `package YourSJSU.src.main.java.com.yoursjsu.dao;`). If your IDE auto-generates the long form, your source folder is incorrect. Please fix it using the step above.
 - In Eclipse, right-click the **YourSJSU** project > **Properties** > **Java Compiler**
 - Enable **project specific settings**
 - Set **Compiler compliance level** to **1.8**
