@@ -1,4 +1,4 @@
-package YourSJSU.src.main.java.com.yoursjsu.dao;
+package com.yoursjsu.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +25,6 @@ public class CredentialDAO {
     }
     
     // Updates the credential table with the user's new password
-    // This is called when the user runs the change-password form
     // Returns true if one row was changed, returns false if nothing changed
     public boolean updatePassword(int userId, String newPassword) {
 
@@ -37,8 +36,8 @@ public class CredentialDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // First ? = the new password
-            // Second ? = which user
+            // first ? = the new password
+            // second ? = which user
             stmt.setString(1, newPassword);
             stmt.setInt(2, userId);
 
