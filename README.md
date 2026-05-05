@@ -5,9 +5,9 @@ Intuitive, Secure, and Responsive School System
 CS 157A - Introduction to Database Management Systems | San Jose State University | Team 3
 ## Team 3 Members
 
-- [@an-h-ngo](https://github.com/an-h-ngo)
-- [@DooVinci](https://github.com/DooVinci)
-- [@nathan-wong1](https://github.com/nathan-wong1)
+- [@an-h-ngo (An Ngo)](https://github.com/an-h-ngo)
+- [@DooVinci (Vincent Do)](https://github.com/DooVinci)
+- [@nathan-wong1 (Nathan Wong)](https://github.com/nathan-wong1)
 ## Overview
 
 YourSJSU is a reimagined student and faculty portal built as a Java web application backed by a MySQL database. It streamlines common university workflows such as registration, class scheduling, transcript access, and financial records.
