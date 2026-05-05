@@ -1,4 +1,4 @@
-package YourSJSU.src.main.java.com.yoursjsu.servlet;
+package com.yoursjsu.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,10 +21,7 @@ public class AddCoursesServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // checks session
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        if (RoleUtil.requireStudent(request, response) == null) {
             return;
         }
 

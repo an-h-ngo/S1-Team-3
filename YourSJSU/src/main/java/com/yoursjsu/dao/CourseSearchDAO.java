@@ -1,4 +1,4 @@
-package YourSJSU.src.main.java.com.yoursjsu.dao;
+package com.yoursjsu.dao;
 import com.yoursjsu.model.SectionResult;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,8 +11,8 @@ public class CourseSearchDAO {
 
     public List<String[]> getAllTerms() {
         List<String[]> terms = new ArrayList<>();
-        String sql = "SELECT term_id, term_name" +
-                "FROM term" +
+        String sql = "SELECT term_id, term_name " +
+                "FROM term " +
                 "ORDER BY term_id DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();

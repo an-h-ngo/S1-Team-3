@@ -1,6 +1,8 @@
-package YourSJSU.src.main.java.com.yoursjsu.servlet;
+package com.yoursjsu.servlet;
 import com.yoursjsu.dao.CredentialDAO;
+import com.yoursjsu.dao.SessionDAO;
 import com.yoursjsu.model.User;
+import com.yoursjsu.util.PasswordUtil;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,14 +15,14 @@ import java.io.IOException;
 public class ChangePasswordServlet extends HttpServlet {
 
     private CredentialDAO credentialDAO = new CredentialDAO();
+    private SessionDAO sessionDAO = new SessionDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        User user = RoleUtil.requireAnyRole(request, response);
+        if (user == null) {
             return;
         }
 
@@ -31,13 +33,17 @@ public class ChangePasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        User user = RoleUtil.requireAnyRole(request, response);
+        if (user == null) {
             return;
         }
 
-        User user = (User) session.getAttribute("user");
+        HttpSession session = request.getSession(false);
+        if (!CsrfUtil.isValid(request)) {
+            request.setAttribute("error", "Your session expired. Please try again.");
+            request.getRequestDispatcher("/change-password.jsp").forward(request, response);
+            return;
+        }
         String currentPassword = request.getParameter("currentPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
@@ -60,14 +66,20 @@ public class ChangePasswordServlet extends HttpServlet {
 
         // Verifies current password
         String storedPassword = credentialDAO.getPasswordHash(user.getUserId());
-        if (storedPassword == null || !storedPassword.equals(currentPassword)) {
+        if (!PasswordUtil.verifyPassword(currentPassword, storedPassword)) {
             request.setAttribute("error", "Current password is incorrect.");
             request.getRequestDispatcher("/change-password.jsp").forward(request, response);
             return;
         }
 
+        if (PasswordUtil.verifyPassword(newPassword, storedPassword)) {
+            request.setAttribute("error", "New password must be different from current password.");
+            request.getRequestDispatcher("/change-password.jsp").forward(request, response);
+            return;
+        }
+
         // update the password
-        boolean updated = credentialDAO.updatePassword(user.getUserId(), newPassword);
+        boolean updated = credentialDAO.updatePasswordHash(user.getUserId(), PasswordUtil.hashPassword(newPassword));
         if (!updated) {
             request.setAttribute("error", "Failed to update password. Please try again.");
             request.getRequestDispatcher("/change-password.jsp").forward(request, response);
@@ -75,6 +87,7 @@ public class ChangePasswordServlet extends HttpServlet {
         }
 
         // Invalidate session so sends to login
+        sessionDAO.invalidateSession((String) session.getAttribute("dbSessionToken"));
         session.invalidate();
         response.sendRedirect(request.getContextPath() + "/login?success=passwordChanged");
     }

@@ -1,7 +1,9 @@
 package com.yoursjsu.servlet;
 import com.yoursjsu.dao.CredentialDAO;
+import com.yoursjsu.dao.SessionDAO;
 import com.yoursjsu.dao.UserDAO;
 import com.yoursjsu.model.User;
+import com.yoursjsu.util.PasswordUtil;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ public class LoginServlet extends HttpServlet {
 
     private UserDAO userDAO = new UserDAO();
     private CredentialDAO credentialDAO = new CredentialDAO();
+    private SessionDAO sessionDAO = new SessionDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -23,7 +26,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
-            redirectByRole(user, request, response);
+            RoleUtil.redirectByRole(user, request, response);
             return;
         }
         // If they just changed their password, show a success message
@@ -67,32 +70,43 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // Check if password matches database column password
-        String hash = credentialDAO.getPasswordHash(user.getUserId());
-        if (hash == null || !hash.equals(password)) {
+        String storedPassword = credentialDAO.getPasswordHash(user.getUserId());
+        if (!PasswordUtil.verifyPassword(password, storedPassword)) {
             request.setAttribute("error", "Invalid credentials.");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
 
+        if (PasswordUtil.needsBcryptMigration(storedPassword)) {
+            boolean migrated = credentialDAO.updatePasswordHash(user.getUserId(), PasswordUtil.hashPassword(password));
+            if (!migrated) {
+                request.setAttribute("error", "Invalid credentials.");
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            }
+        }
+
+        HttpSession existingSession = request.getSession(false);
+        if (existingSession != null) {
+            existingSession.invalidate();
+        }
+
         // If steps are successful, log them in
+        sessionDAO.expireOldSessions();
         HttpSession session = request.getSession(true);
         session.setAttribute("user", user);
+        session.removeAttribute("activeRole");
         session.setMaxInactiveInterval(60 * 60); // log them out after 1 hour of inactivity
+        CsrfUtil.getToken(session);
+        if (!sessionDAO.createSession(session.getId(), user.getUserId())) {
+            session.invalidate();
+            request.setAttribute("error", "Unable to start a secure session. Please try again.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+        session.setAttribute("dbSessionToken", session.getId());
 
         // OSend to dashboard
-        redirectByRole(user, request, response);
-    }
-
-    private void redirectByRole(User user, HttpServletRequest request,
-                                HttpServletResponse response) throws IOException {
-        if (user.getIsStudent()) {
-            response.sendRedirect(request.getContextPath() + "/student-dashboard"); // send to student dashboard if user is a student
-        } else if (user.getIsFaculty()) {
-            response.sendRedirect(request.getContextPath() + "/faculty-dashboard"); // send to staff dashboard if user is a faculty
-        } else {
-            // Send to login if neither student or faculty
-            response.sendRedirect(request.getContextPath() + "/login");
-        }
+        RoleUtil.redirectByRole(user, request, response);
     }
 }
