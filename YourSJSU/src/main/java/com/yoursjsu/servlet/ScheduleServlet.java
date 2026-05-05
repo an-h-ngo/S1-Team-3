@@ -1,4 +1,4 @@
-package YourSJSU.src.main.java.com.yoursjsu.servlet;
+package com.yoursjsu.servlet;
 
 import com.yoursjsu.dao.CourseDAO;
 import com.yoursjsu.dao.ScheduleDAO;
@@ -36,4 +36,3 @@ public class ScheduleServlet extends HttpServlet {
     }
     
 }
-

@@ -76,6 +76,28 @@
         </div>
         Add Classes
     </a>
+    <a href="${pageContext.request.contextPath}/drop-course" class="btn-action">
+        <div class="icon icon-drop">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 5h10"/>
+                <path d="M5 5v8a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V5"/>
+                <path d="M6 5V3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5V5"/>
+            </svg>
+        </div>
+        Drop a Course
+    </a>
+    <a href="${pageContext.request.contextPath}/financial-summary" class="btn-action">
+        <div class="icon icon-pw">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="8" r="6"/>
+                <path d="M8 5v6"/>
+                <path d="M6 7h3a1 1 0 0 1 0 2H7a1 1 0 0 0 0 2h3"/>
+            </svg>
+        </div>
+        Financial Summary
+    </a>
     <a href="${pageContext.request.contextPath}/change-password" class="btn-action">
         <div class="icon icon-pw">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"

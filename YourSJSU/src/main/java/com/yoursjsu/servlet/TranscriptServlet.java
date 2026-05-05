@@ -1,4 +1,4 @@
-package YourSJSU.src.main.java.com.yoursjsu.servlet;
+package com.yoursjsu.servlet;
 
 import java.io.IOException;
 import java.util.List;

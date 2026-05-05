@@ -715,6 +715,23 @@ body {
     color: #b71c1c;
     font-weight: 600;
 }
+
+/* DROP COURSE & MANAGE STUDENTS */
+.btn-drop {
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #b71c1c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-drop:hover {
+    background-color: #8b1414;
+}
 .card {
 	text-align: center;
 }

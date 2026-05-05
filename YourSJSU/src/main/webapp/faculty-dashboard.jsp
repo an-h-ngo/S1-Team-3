@@ -31,6 +31,7 @@
         <% } %>
 
         <div class="dashboard-actions">
+            <a href="${pageContext.request.contextPath}/manage-students" class="btn-action">Manage Students</a>
             <a href="${pageContext.request.contextPath}/change-password" class="btn-action">Change Password</a>
         </div>
     </main>
