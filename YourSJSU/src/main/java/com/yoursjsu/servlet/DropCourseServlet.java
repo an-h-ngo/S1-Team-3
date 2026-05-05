@@ -1,18 +1,34 @@
 package com.yoursjsu.servlet;
 
+import com.yoursjsu.dao.EnrollmentDAO;
 import com.yoursjsu.dao.RegistrationDAO;
+import com.yoursjsu.model.SectionResult;
 import com.yoursjsu.model.User;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @WebServlet("/drop-course")
 public class DropCourseServlet extends HttpServlet {
+    private EnrollmentDAO enrollmentDAO = new EnrollmentDAO();
     private RegistrationDAO registrationDAO = new RegistrationDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        User user = RoleUtil.requireStudent(request, response);
+        if (user == null) {
+            return;
+        }
+
+        List<SectionResult> enrolled = enrollmentDAO.getEnrolledSections(user.getUserId());
+        request.setAttribute("enrolled", enrolled);
+        request.getRequestDispatcher("/drop-course.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

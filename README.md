@@ -5,9 +5,9 @@ Intuitive, Secure, and Responsive School System
 CS 157A - Introduction to Database Management Systems | San Jose State University | Team 3
 ## Team 3 Members
 
-- [@an-h-ngo](https://github.com/an-h-ngo)
-- [@DooVinci](https://github.com/DooVinci)
-- [@nathan-wong1](https://github.com/nathan-wong1)
+- [@an-h-ngo (An Ngo)](https://github.com/an-h-ngo)
+- [@DooVinci (Vincent Do)](https://github.com/DooVinci)
+- [@nathan-wong1 (Nathan Wong)](https://github.com/nathan-wong1)
 ## Overview
 
 YourSJSU is a reimagined student and faculty portal built as a Java web application backed by a MySQL database. It streamlines common university workflows such as registration, class scheduling, transcript access, and financial records.
@@ -42,7 +42,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 **Java:** Java 8
 
-**IDE:** Eclipse
+**IDE:** Eclipse/IntelliJ IDEA
 ## Prerequisites
 
 - **Java 8+** installed
@@ -71,8 +71,12 @@ For local testing, run `database/demo_accounts.sql` after loading the main datab
 Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`. Do not commit real student, faculty, or team member credentials in README or SQL setup files.
 
 ## Deployment
-- Import the **YourSJSU** folder as an existing project in Eclipse
+- Import the **YourSJSU** folder as an existing project in Eclipse / IntelliJ
 - Edit the **DatabaseConnection.java** for your MySQL Workbench setup
+- **IMPORTANT — Source folder setup (so package declarations work for everyone):**
+  - **Eclipse:** right-click `src/main/java` in Project Explorer > **Build Path** > **Use as Source Folder**
+  - **IntelliJ:** right-click `src/main/java` in Project view > **Mark Directory as** > **Sources Root**
+  - All Java files MUST use packages like `package com.yoursjsu.dao;` (NOT `package YourSJSU.src.main.java.com.yoursjsu.dao;`). If your IDE auto-generates the long form, your source folder is incorrect. Please fix it using the step above.
 - In Eclipse, right-click the **YourSJSU** project > **Properties** > **Java Compiler**
 - Enable **project specific settings**
 - Set **Compiler compliance level** to **1.8**
@@ -83,7 +87,7 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`. Do n
 - Then copy the files from `\YourSJSU\src\main\webapp\` to `C:\tomcat8\webapps\YourSJSU\`
 - Lastly, copy the files from `YourSJSU\src\main\webapp\css\style.css` to `C:\tomcat8\webapps\YourSJSU\css\style.css`
 - Run **startup.bat** in `C:\tomcat8\bin\`
-- Go to **http://localhost:8080/YourSJSU/** and the login page should load
+- Go to **http://localhost:8080/YourSJSU/**, and the login page should load
 - Run **shutdown.bat** in `C:\tomcat8\bin\` to shutdown the tomcat server
 
 ## Demo Checklist

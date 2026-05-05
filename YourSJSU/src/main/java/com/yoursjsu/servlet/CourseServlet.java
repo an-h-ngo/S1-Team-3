@@ -30,4 +30,3 @@ public class CourseServlet extends HttpServlet {
     }
     
 }
-

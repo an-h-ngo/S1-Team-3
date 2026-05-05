@@ -75,6 +75,7 @@
                 <article class="card">
                     <h2>Quick actions</h2>
                     <div class="dashboard-actions">
+                        <a href="${pageContext.request.contextPath}/manage-students" class="btn-action">Manage Students</a>
                         <% if (user != null && user.getIsStudent() && user.getIsFaculty()) { %>
                             <a href="${pageContext.request.contextPath}/select-role" class="btn-action">Switch Role</a>
                         <% } %>

@@ -773,6 +773,19 @@ tbody tr:hover { background: #f8fbff; }
 
 .hold-amount { color: var(--danger); font-weight: 900; }
 
+.btn-drop {
+    border: 1px solid rgba(192, 57, 43, 0.18);
+    border-radius: 999px;
+    background: #fff1ef;
+    color: var(--danger);
+    padding: 8px 13px;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.btn-drop:hover { background: #ffe4df; }
+
 .gpa-summary {
     display: flex;
     justify-content: flex-end;

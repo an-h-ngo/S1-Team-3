@@ -124,7 +124,7 @@ public class FinancialDAO {
         return BigDecimal.ZERO;
     }
 
-    // Returns overdue charges if the status is overdue
+    // returns overdue charges if the status is overdue
     public List<Charge> getOverdueCharges(int userId, Integer termId) {
         List<Charge> overdue = new ArrayList<>();
 

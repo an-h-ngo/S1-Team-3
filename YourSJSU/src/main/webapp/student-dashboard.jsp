@@ -170,6 +170,7 @@
                     <div class="dashboard-actions">
                         <a href="${pageContext.request.contextPath}/search-courses" class="btn-action">Search Courses</a>
                         <a href="${pageContext.request.contextPath}/schedule" class="btn-action">Review Schedule</a>
+                        <a href="${pageContext.request.contextPath}/drop-course" class="btn-action">Drop a Course</a>
                         <% if (user != null && user.getIsStudent() && user.getIsFaculty()) { %>
                             <a href="${pageContext.request.contextPath}/select-role" class="btn-action">Switch Role</a>
                         <% } %>
