@@ -104,8 +104,12 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`. Do n
 10. View financial summary and filter by term.
 11. Change password and verify same-password updates are rejected.
 12. Log out, then log in with the dummy faculty account and verify the faculty dashboard.
+13. Open Manage Students from the faculty dashboard.
+14. Verify student profile rows show name, SJSU ID, email, account status, and hold count.
+15. Place and lift a hold for a student account.
+16. Activate and deactivate a student account.
 
-## Implemented Functional Requirements (Updated 5/4/2026)
+## Implemented Functional Requirements (Updated 5/5/2026)
 
 - [Vincent, An] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out. Passwords are verified with bcrypt, legacy/plain passwords are upgraded after successful login, authenticated requests are backed by the database `session` table, protected JSPs are guarded by an auth filter, dual-role users choose whether to continue as student or faculty, can switch roles during a session, and pages are restricted by the active role.
 - [Nathan, An] FR-S2: View Student Dashboard - Students can view hold status, registration status, active enrollments, and active waitlists from the database.
@@ -118,6 +122,17 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`. Do n
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
 - [Vincent, An] FR-S10: Password change - Users can change their password, which stores a bcrypt hash, updates the last-changed timestamp, rejects same-password updates, invalidates the web session, and redirects them to login.
 - [An] FR-F1: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
+
+## Faculty Functional Requirements
+
+- [Vincent, An] FR-D1: Authentication (Faculty) - Faculty can log in, log out, select the faculty role when applicable, and access faculty-only pages through the shared authentication and role-checking flow.
+- [Vincent] FR-D2: View Student's Profile - Faculty can view student profile rows through Manage Students, including name, SJSU ID, email, account status, and hold count.
+- [Vincent] FR-D3: Lift/Place Holds - Faculty can place a financial hold on a student account or lift existing holds through Manage Students.
+- [Vincent] FR-D4: Denying/Granting Access to Students - Faculty can activate or deactivate student accounts through Manage Students.
+- [PENDING] FR-D5: Adding Classes - Faculty class creation workflows are planned for future work.
+- [PENDING] FR-D6: Removing Classes - Faculty class removal workflows are planned for future work.
+- [PENDING] FR-D7: Update Course Information - Faculty course editing workflows are planned for future work.
+- [Vincent, An] FR-D8: Change Password (Faculty) - Faculty can change their password through the same bcrypt-backed password change flow used by students.
 
 ## Final Functional Requirement Status
 
@@ -133,7 +148,18 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`. Do n
 | 2.8 View Grades/Academic Record | Nathan, An | TranscriptDAO, TranscriptServlet, ClassStatus, transcript.jsp | Implemented | Displays completed grade history from enrollment records with readable term names; dropped in-progress classes are excluded from transcript display. |
 | 2.9 View Financial Records | Vincent | FinancialDAO, FinancialSummaryServlet, financial-summary.jsp | Implemented | Shows charges, payments, balance, and term filter. |
 | 2.10 Faculty Teaching and Organizational Access | An | FacultyDAO, FacultyDashboardServlet, faculty-dashboard.jsp | Implemented | Shows title, department, assigned sections, and enrolled counts. |
+| FR-D1 Faculty Authentication | Vincent, An | LoginServlet, LogoutServlet, RoleSelectionServlet, RoleUtil, AuthFilter, SessionDAO, PasswordUtil, login.jsp, select-role.jsp | Implemented | Faculty can authenticate, choose the faculty role when applicable, and access faculty-only pages. |
+| FR-D2 View Student Profile | Vincent | ManageStudentsServlet, StudentAdminDAO, manage-students.jsp | Implemented | Faculty can view student name, SJSU ID, email, account status, and hold count. |
+| FR-D3 Lift/Place Holds | Vincent | ManageStudentsServlet, StudentAdminDAO, manage-students.jsp | Implemented | Faculty can place a financial hold or lift all holds for a student. |
+| FR-D4 Deny/Grant Student Access | Vincent | ManageStudentsServlet, StudentAdminDAO, manage-students.jsp | Implemented | Faculty can activate or deactivate student accounts. |
+| FR-D5 Add Classes | TBD | TBD | Pending | Faculty class creation workflows are planned for future work. |
+| FR-D6 Remove Classes | TBD | TBD | Pending | Faculty class removal workflows are planned for future work. |
+| FR-D7 Update Course Information | TBD | TBD | Pending | Faculty course editing workflows are planned for future work. |
+| FR-D8 Faculty Change Password | Vincent, An | ChangePasswordServlet, CredentialDAO, PasswordUtil, change-password.jsp | Implemented | Faculty use the same bcrypt-backed password change flow as students. |
 
 ## Future Work
 
-- Admin screens for assigning faculty, courses, and sections
+- FR-D5: Faculty add classes.
+- FR-D6: Faculty remove classes.
+- FR-D7: Faculty update course information.
+- Admin assignment workflows for faculty, courses, and sections.
