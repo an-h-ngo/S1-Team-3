@@ -53,7 +53,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 ```bash
   1. Open MySQL Workbench and connect to the local MySQL server
-  2. Run the full yoursjsu database script which will create all the tables and sample data
+  2. Run the full yoursjsu database script, which will create all the tables and sample data
   2. Update src/main/java/com/yoursjsu/dao/DatabaseConnection.java with your MySQL Workbench password
 ```
 ## Deployment
@@ -69,23 +69,25 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - Then copy the files from `\YourSJSU\src\main\webapp\` to `C:\tomcat8\webapps\YourSJSU\`
 - Lastly, copy the files from `YourSJSU\src\main\webapp\css\style.css` to `C:\tomcat8\webapps\YourSJSU\css\style.css`
 - Run **startup.bat** in `C:\tomcat8\bin\`
-- Go to **http://localhost:8080/YourSJSU/** and the login page should load
+- Go to **http://localhost:8080/YourSJSU/**, and the login page should load
 - Run **shutdown.bat** in `C:\tomcat8\bin\` to shutdown the tomcat server
-## Implemented Functional Requirements (Updated 4/28/2026)
+## Implemented Functional Requirements (12/18) (Updated 5/5/2026)
 
-- [Vincent] FR-S1 / FR-D1: Authentication (Login/Logout) - Users can log in and log out.
+- [Vincent] FR-S1: Authentication (Student) - Students must log in using their Student ID and password to access portal functions.
 - [Nathan] FR-S2: View Student Dashboard - Students can view a dashboard summarizing the student’s current enrollment, holds, outstanding tasks, and key dates. 
 - [Vincent] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria.
+- [PENDING] FR-S4: Enroll in a Course - Students can add a course section to their schedule.
+- [PENDING] FR-S5: Join/Leave Waitlist - Students can join or drop a currently enrolled course within specified deadlines.
 - [Nathan] FR-S6: Drop a Course - Students can drop a course by clicking the garbage button next to the class name in the courses page.
 - [Nathan] FR-S7: View Schedule - Students can view the schedule for this term and their previous courses.  If a student wishes to drop a course, simply click the garbage button and the course will be removed.
-- [Nathan] FR-S8: View Transcript - Students can view their GPA, classes completed, and grades.
+- [Nathan] FR-S8: View Unofficial Transcript - Students can view their GPA, classes completed, and grades.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
-- [Vincent] FR-S10: Password change - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
-## Future Work
-
-- Real bcrypt password verification (add jBCrypt library)
-- Database-backed session management (using the session table)
-- Auth filter for protecting all pages
-- Student dashboard content (enrollments, holds, schedule)
-- Faculty dashboard content (sections taught, department info)
-- Course enrollment (FR-S4)
+- [Vincent] FR-S10: Change Password (Student) - Users can change their password, which updates the database with the new password, redirects them to the login screen for re-login.
+- [Vincent] FR-D1: Authentication (Faculty) - Faculty must log in using their Staff ID and password to access faculty portal functions.
+- [PENDING] FR-D2: View Student’s Profile - Faculty can view enrolled students’ profiles in the database.
+- [Vincent] FR-D3: Lift/Place Holds - Faculty staff can alter the hold status on students’ profiles.
+- [Vincent] FR-D4: Denying/Granting Access to Students - Faculty staff can change student account settings, such as placing holds or deactivating their accounts.
+- [PENDING] FR-D5: Adding Classes - Faculty can add new classes to the database.
+- [PENDING] FR-D6: Removing Classes - Faculty can remove preexisting classes from the database.
+- [PENDING] FR-D7: Update Course Information - Faculty can update preexisting classes from the database.
+- [Vincent] FR-D8: Change Password (Faculty) - Faculty are able to change their password.
