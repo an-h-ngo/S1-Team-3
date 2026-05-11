@@ -108,9 +108,9 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [An] FR-D2: View Student's Profile - Faculty can view student profile rows through Manage Students, including name, SJSU ID, email, account status, and hold count.
 - [Vincent] FR-D3: Lift/Place Holds - Faculty can place a financial hold on a student account or lift existing holds through Manage Students.
 - [Vincent] FR-D4: Denying/Granting Access to Students - Faculty can activate or deactivate student accounts through Manage Students.
-- [Vincent] FR-D5: Adding Classes - Faculty class creation workflows are planned for future work.
-- [Vincent] FR-D6: Removing Classes - Faculty class removal workflows are planned for future work.
-- [PENDING] FR-D7: Update Course Information - Faculty course editing workflows are planned for future work.
+- [Vincent] FR-D5: Adding Classes - Faculty class creation.
+- [Vincent] FR-D6: Removing Classes - Faculty class removal.
+- [PENDING] FR-D7: Update Course Information - Faculty course editing.
 - [Vincent (70%), An (30%)] FR-D8: Change Password (Faculty) - Faculty can change their password through the same bcrypt-backed password change flow used by students.
 - [An] FR-F9: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
 
