@@ -89,7 +89,7 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - Go to **http://localhost:8080/YourSJSU/**, and the login page should load
 - Run **shutdown.bat** in `C:\tomcat8\bin\` to shutdown the tomcat server
 
-## Implemented Functional Requirements (Updated 5/11/2026)
+## Implemented Student Functional Requirements (Updated 5/11/2026)
 
 - [Vincent (50%), An (50%)] FR-S1: Authentication (Student) - Users can log in and log out. Passwords are verified with bcrypt, legacy/plain passwords are upgraded after successful login, authenticated requests are backed by the database `session` table, protected JSPs are guarded by an auth filter, dual-role users choose whether to continue as student or faculty, can switch roles during a session, and pages are restricted by the active role.
 - [Nathan (50%), An (50%)] FR-S2: View Student Dashboard - Students can view hold status, registration status, active enrollments, and active waitlists from the database.
@@ -102,7 +102,7 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
 - [Vincent (70%), An (30%)] FR-S10: Password change - Users can change their password, which stores a bcrypt hash, updates the last-changed timestamp, rejects same-password updates, invalidates the web session, and redirects them to login.
 
-## Faculty Functional Requirements
+## Implemented Faculty Functional Requirements (Updated 5/11/2026)
 
 - [Vincent (50%), An (50%)] FR-D1: Authentication (Faculty) - Faculty can log in, log out, select the faculty role when applicable, and access faculty-only pages through the shared authentication and role-checking flow.
 - [An] FR-D2: View Student's Profile - Faculty can view student profile rows through Manage Students, including name, SJSU ID, email, account status, and hold count.
