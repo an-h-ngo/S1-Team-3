@@ -52,7 +52,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 ```bash
   1. Open MySQL Workbench and connect to the local MySQL server
-  2. Run the full yoursjsu database script which will create all the tables and sample data
+  2. Run the full yoursjsu database script, which will create all the tables and sample data
   3. Optional: run database/demo_accounts.sql to add safe local demo accounts
   4. Update src/main/java/com/yoursjsu/dao/DatabaseConnection.java with your MySQL Workbench password
 ```
@@ -91,10 +91,10 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 
 ## Implemented Student Functional Requirements (Updated 5/11/2026)
 
-- [Vincent (50%), An (50%)] FR-S1: Authentication (Student) - Users can log in and log out. Passwords are verified with bcrypt, legacy/plain passwords are upgraded after successful login, authenticated requests are backed by the database `session` table, protected JSPs are guarded by an auth filter, dual-role users choose whether to continue as student or faculty, can switch roles during a session, and pages are restricted by the active role.
+- [Vincent (50%), An (50%)] FR-S1: Authentication (Student) - Users can log in and log out. Passwords are verified with bcrypt, legacy/plain passwords are upgraded after successful login. Authenticated requests are backed by the database `session` table, protected JSPs are guarded by an auth filter, dual-role users choose whether to continue as student or faculty, can switch roles during a session, and pages are restricted by the active role.
 - [Nathan (50%), An (50%)] FR-S2: View Student Dashboard - Students can view hold status, registration status, active enrollments, and active waitlists from the database.
 - [Vincent] FR-S3: Search for Courses - Users can search for courses using various search filters and criteria. Search results include live enrollment/waitlist counts and registration actions.
-- [An] FR-S4: Enroll in a Section - Students can enroll in open sections after eligibility, same-course/same-term duplicate prevention, waitlist conflict, capacity, and registration window checks. Enrollment asks for confirmation and supports re-enrollment before the term registration close deadline.
+- [An] FR-S4: Enroll in a Section - Students can enroll in open sections after eligibility, same-course/same-term duplicate prevention, waitlist conflict, capacity, and registration window checks. Enrollment asks for confirmation and supports re-enrollment before the term registration deadline.
 - [An] FR-S5: Join a Waitlist - Students can join a waitlist when a section is full, registration is open, prerequisites are satisfied, no same-course enrollment conflict exists, and waitlist capacity remains. Waitlist requests ask for confirmation before submission.
 - [Nathan (50%), An (50%)] FR-S6: Drop a Course - Students can drop an enrolled course through a transactional server-side update that marks the enrollment dropped, records the drop timestamp when the term deadline allows it, and automatically promotes the earliest eligible waitlisted student when a seat opens. Drop asks for confirmation before submission.
 - [Nathan (70%), An (30%)] FR-S7: View Schedule - Students can view their current and completed courses with section meeting details.
@@ -108,14 +108,12 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [An] FR-D2: View Student's Profile - Faculty can view student profile rows through Manage Students, including name, SJSU ID, email, account status, and hold count.
 - [Vincent] FR-D3: Lift/Place Holds - Faculty can place a financial hold on a student account or lift existing holds through Manage Students.
 - [Vincent] FR-D4: Denying/Granting Access to Students - Faculty can activate or deactivate student accounts through Manage Students.
-- [PENDING] FR-D5: Adding Classes - Faculty class creation workflows are planned for future work.
-- [PENDING] FR-D6: Removing Classes - Faculty class removal workflows are planned for future work.
+- [Vincent] FR-D5: Adding Classes - Faculty class creation workflows are planned for future work.
+- [Vincent] FR-D6: Removing Classes - Faculty class removal workflows are planned for future work.
 - [PENDING] FR-D7: Update Course Information - Faculty course editing workflows are planned for future work.
 - [Vincent (70%), An (30%)] FR-D8: Change Password (Faculty) - Faculty can change their password through the same bcrypt-backed password change flow used by students.
 - [An] FR-F9: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
 
 ## Future Work
 
-- FR-D5: Faculty add classes.
-- FR-D6: Faculty remove classes.
 - FR-D7: Faculty update course information.
