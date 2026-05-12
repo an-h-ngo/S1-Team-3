@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Change Password</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260507-sidebar-edge">
 </head>
 <body class="dashboard-page">
 <%
@@ -19,19 +19,22 @@
 %>
     <div class="portal-shell">
         <aside class="portal-rail" aria-label="Portal navigation">
-            <div class="brand"><div class="seal">SJ</div><div><h1>YourSJSU</h1><span><%= facultyRole ? "Faculty Portal" : "Student Portal" %></span></div></div>
+            <div class="brand"><div class="seal">SJ</div><div class="brand-copy"><h1>YourSJSU</h1><span><%= facultyRole ? "Faculty Portal" : "Student Portal" %></span></div></div>
             <nav class="portal-nav">
                 <% if (facultyRole) { %>
-                    <a href="${pageContext.request.contextPath}/faculty-dashboard">Faculty Dashboard</a>
+                    <a href="${pageContext.request.contextPath}/faculty-dashboard" aria-label="Faculty Dashboard"><span class="nav-icon nav-icon-faculty" aria-hidden="true"></span><span class="nav-label">Faculty Dashboard</span></a>
+                    <a href="${pageContext.request.contextPath}/manage-students" aria-label="Manage Students"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Manage Students</span></a>
+                    <a href="${pageContext.request.contextPath}/manage-sections" aria-label="Manage Sections"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Manage Sections</span></a>
+                    <a href="${pageContext.request.contextPath}/complete-classes" aria-label="Complete Classes"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Complete Classes</span></a>
                 <% } else { %>
-                    <a href="${pageContext.request.contextPath}/student-dashboard">Overview</a>
-                    <a href="${pageContext.request.contextPath}/search-courses">Course Search</a>
-                    <a href="${pageContext.request.contextPath}/schedule">Term Schedule</a>
-                    <a href="${pageContext.request.contextPath}/transcript">Transcript</a>
-                    <a href="${pageContext.request.contextPath}/financial-summary">Finances</a>
+                    <a href="${pageContext.request.contextPath}/student-dashboard" aria-label="Overview"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Overview</span></a>
+                    <a href="${pageContext.request.contextPath}/search-courses" aria-label="Course Search"><span class="nav-icon nav-icon-search" aria-hidden="true"></span><span class="nav-label">Course Search</span></a>
+                    <a href="${pageContext.request.contextPath}/schedule" aria-label="Term Schedule"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Term Schedule</span></a>
+                    <a href="${pageContext.request.contextPath}/transcript" aria-label="Transcript"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Transcript</span></a>
+                    <a href="${pageContext.request.contextPath}/financial-summary" aria-label="Finances"><span class="nav-icon nav-icon-finances" aria-hidden="true"></span><span class="nav-label">Finances</span></a>
                 <% } %>
                 <% if (user != null && user.getIsStudent() && user.getIsFaculty()) { %>
-                    <a href="${pageContext.request.contextPath}/select-role">Switch Role</a>
+                    <a href="${pageContext.request.contextPath}/select-role" aria-label="Switch Role"><span class="nav-icon nav-icon-switch" aria-hidden="true"></span><span class="nav-label">Switch Role</span></a>
                 <% } %>
             </nav>
             <details class="account-menu-wrap">

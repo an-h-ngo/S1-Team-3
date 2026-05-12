@@ -60,6 +60,10 @@ public class RegistrationDAO {
                     conn.rollback();
                     return "You are already waitlisted for this section.";
                 }
+                if (hasActiveWaitlistForSameCourse(conn, userId, sectionId)) {
+                    conn.rollback();
+                    return "You are already waitlisted for another section of this course.";
+                }
                 String prerequisiteError = getPrerequisiteError(conn, userId, sectionId);
                 if (prerequisiteError != null) {
                     conn.rollback();
@@ -132,6 +136,10 @@ public class RegistrationDAO {
                 if (hasActiveWaitlist(conn, userId, sectionId)) {
                     conn.rollback();
                     return "You are already waitlisted for this section.";
+                }
+                if (hasActiveWaitlistForSameCourse(conn, userId, sectionId)) {
+                    conn.rollback();
+                    return "You are already waitlisted for another section of this course.";
                 }
                 String prerequisiteError = getPrerequisiteError(conn, userId, sectionId);
                 if (prerequisiteError != null) {
@@ -352,6 +360,25 @@ public class RegistrationDAO {
         String sql = "SELECT 1 FROM student_waitlist "
                 + "WHERE user_id = ? AND section_id = ? AND status = 'waiting'";
         return exists(conn, sql, userId, sectionId);
+    }
+
+    private boolean hasActiveWaitlistForSameCourse(Connection conn, int userId, int sectionId) throws SQLException {
+        String sql = "SELECT 1 "
+                + "FROM student_waitlist w "
+                + "JOIN section waitlisted_section ON w.section_id = waitlisted_section.section_id "
+                + "JOIN section requested_section ON requested_section.section_id = ? "
+                + "WHERE w.user_id = ? "
+                + "AND w.status = 'waiting' "
+                + "AND waitlisted_section.course_id = requested_section.course_id "
+                + "AND waitlisted_section.term_id = requested_section.term_id "
+                + "AND waitlisted_section.section_id <> requested_section.section_id";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, sectionId);
+            stmt.setInt(2, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
     }
 
     private String getPrerequisiteError(Connection conn, int userId, int sectionId) throws SQLException {

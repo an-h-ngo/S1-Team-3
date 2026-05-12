@@ -60,7 +60,7 @@ public class AddCoursesServlet extends HttpServlet{
                 }
 
                 List<SectionResult> results = courseSearchDAO.searchSections(
-                        effectiveKeyword, departmentCode);
+                        effectiveKeyword, departmentCode, courseNumber, instructorName, termIdStr);
                 request.setAttribute("results", results);
                 request.setAttribute("searched", true);
             }

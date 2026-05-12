@@ -10,6 +10,7 @@ public class Course {
 	private String startTime;
 	private String endTime;
 	private String location;
+	private String instructorName;
 	
 	public Course(String courseTitle, String status) {
 		this.courseTitle = courseTitle;
@@ -18,6 +19,12 @@ public class Course {
 
     public Course(int sectionId, String courseTitle, String status, String termName,
                   String meetingDays, String startTime, String endTime, String location) {
+        this(sectionId, courseTitle, status, termName, meetingDays, startTime, endTime, location, null);
+    }
+
+    public Course(int sectionId, String courseTitle, String status, String termName,
+                  String meetingDays, String startTime, String endTime, String location,
+                  String instructorName) {
         this.sectionId = sectionId;
         this.courseTitle = courseTitle;
         this.status = status;
@@ -26,6 +33,7 @@ public class Course {
         this.startTime = startTime;
         this.endTime = endTime;
         this.location = location;
+        this.instructorName = instructorName;
     }
 	
 	public int getSectionId() { return this.sectionId; }
@@ -51,4 +59,7 @@ public class Course {
 
     public String getLocation() { return this.location; }
     public void setLocation(String location) { this.location = location; }
+
+    public String getInstructorName() { return this.instructorName; }
+    public void setInstructorName(String instructorName) { this.instructorName = instructorName; }
 }

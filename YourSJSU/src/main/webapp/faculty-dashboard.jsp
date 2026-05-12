@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Faculty Dashboard</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260507-sidebar-edge">
 </head>
 <body class="dashboard-page">
 <%
@@ -23,11 +23,14 @@
 %>
     <div class="portal-shell">
         <aside class="portal-rail" aria-label="Portal navigation">
-            <div class="brand"><div class="seal">SJ</div><div><h1>YourSJSU</h1><span>Faculty Portal</span></div></div>
+            <div class="brand"><div class="seal">SJ</div><div class="brand-copy"><h1>YourSJSU</h1><span>Faculty Portal</span></div></div>
             <nav class="portal-nav">
-                <a class="active" href="${pageContext.request.contextPath}/faculty-dashboard">Faculty Dashboard</a>
+                <a class="active" href="${pageContext.request.contextPath}/faculty-dashboard" aria-label="Faculty Dashboard"><span class="nav-icon nav-icon-faculty" aria-hidden="true"></span><span class="nav-label">Faculty Dashboard</span></a>
+                <a href="${pageContext.request.contextPath}/manage-students" aria-label="Manage Students"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Manage Students</span></a>
+                <a href="${pageContext.request.contextPath}/manage-sections" aria-label="Manage Sections"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Manage Sections</span></a>
+                <a href="${pageContext.request.contextPath}/complete-classes" aria-label="Complete Classes"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Complete Classes</span></a>
                 <% if (user != null && user.getIsStudent() && user.getIsFaculty()) { %>
-                    <a href="${pageContext.request.contextPath}/select-role">Switch Role</a>
+                    <a href="${pageContext.request.contextPath}/select-role" aria-label="Switch Role"><span class="nav-icon nav-icon-switch" aria-hidden="true"></span><span class="nav-label">Switch Role</span></a>
                 <% } %>
             </nav>
             <details class="account-menu-wrap">
@@ -73,13 +76,10 @@
                 </article>
 
                 <article class="card">
-                    <h2>Quick actions</h2>
-                    <div class="dashboard-actions">
-                        <a href="${pageContext.request.contextPath}/manage-students" class="btn-action">Manage Students</a>
-                        <a href="${pageContext.request.contextPath}/manage-sections" class="btn-action">Manage Sections</a>
-                        <% if (user != null && user.getIsStudent() && user.getIsFaculty()) { %>
-                            <a href="${pageContext.request.contextPath}/select-role" class="btn-action">Switch Role</a>
-                        <% } %>
+                    <h2>Administrative summary</h2>
+                    <div class="list">
+                        <div class="row"><div><h4>Student records</h4><p>Review student access and account holds from the faculty navigation.</p></div><span class="pill">Available</span></div>
+                        <div class="row"><div><h4>Section tools</h4><p>Add sections, review offerings, and complete enrollments from the sidebar.</p></div><span class="pill green">Ready</span></div>
                     </div>
                 </article>
             </section>

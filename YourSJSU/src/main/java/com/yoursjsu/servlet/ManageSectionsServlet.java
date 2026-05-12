@@ -2,13 +2,11 @@ package com.yoursjsu.servlet;
 import com.yoursjsu.dao.CourseSearchDAO;
 import com.yoursjsu.dao.SectionAdminDAO;
 import com.yoursjsu.model.SectionResult;
-import com.yoursjsu.model.User;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class ManageSectionsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (!isFacultyLoggedIn(request, response)) return;
+        if (RoleUtil.requireFaculty(request, response) == null) return;
 
         request.setAttribute("courses",  dao.getAllCoursesForDropdown());
         request.setAttribute("faculty",  dao.getAllFacultyForDropdown());
@@ -37,7 +35,12 @@ public class ManageSectionsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (!isFacultyLoggedIn(request, response)) return;
+        if (RoleUtil.requireFaculty(request, response) == null) return;
+
+        if (!CsrfUtil.isValid(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         String action = request.getParameter("action");
         String result;
@@ -58,9 +61,11 @@ public class ManageSectionsServlet extends HttpServlet {
         try {
             int courseId        = Integer.parseInt(request.getParameter("courseId"));
             int termId          = Integer.parseInt(request.getParameter("termId"));
-            String facultyStr   = request.getParameter("facultyId");
-            Integer facultyId   = (facultyStr == null || facultyStr.trim().isEmpty())
-                                  ? null : Integer.parseInt(facultyStr.trim());
+            String facultyStr   = nullIfBlank(request.getParameter("facultyId"));
+            if (facultyStr == null) {
+                return "bad-input";
+            }
+            Integer facultyId   = Integer.parseInt(facultyStr);
             String meetingDays  = nullIfBlank(request.getParameter("meetingDays"));
             String startTime    = nullIfBlank(request.getParameter("startTime"));
             String endTime      = nullIfBlank(request.getParameter("endTime"));
@@ -68,6 +73,11 @@ public class ManageSectionsServlet extends HttpServlet {
             String modality     = nullIfBlank(request.getParameter("modality"));
             int capacity        = Integer.parseInt(request.getParameter("capacity"));
             int waitlistCap     = Integer.parseInt(request.getParameter("waitlistCapacity"));
+
+            if (meetingDays == null || startTime == null || endTime == null || location == null
+                    || modality == null || capacity < 1 || waitlistCap < 0) {
+                return "bad-input";
+            }
 
             boolean ok = dao.addSection(courseId, termId, facultyId,
                                         meetingDays, startTime, endTime,
@@ -90,20 +100,5 @@ public class ManageSectionsServlet extends HttpServlet {
 
     private String nullIfBlank(String s) {
         return (s == null || s.trim().isEmpty()) ? null : s.trim();
-    }
-
-    private boolean isFacultyLoggedIn(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return false;
-        }
-        User user = (User) session.getAttribute("user");
-        if (!user.getIsFaculty()) {
-            response.sendRedirect(request.getContextPath() + "/student-dashboard");
-            return false;
-        }
-        return true;
     }
 }

@@ -2,13 +2,24 @@
 <%@ page import="com.yoursjsu.model.User" %>
 <%@ page import="com.yoursjsu.model.SectionResult" %>
 <%@ page import="java.util.List" %>
+<%!
+    private String h(Object value) {
+        if (value == null) return "";
+        return String.valueOf(value)
+                .replace("&", "&amp;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;");
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Search Courses</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260507-sidebar-edge">
 </head>
 <body class="dashboard-page">
 <%
@@ -16,12 +27,7 @@
     List<SectionResult> results = (List<SectionResult>) request.getAttribute("results");
     Boolean searched = (Boolean) request.getAttribute("searched");
     String returnQuery = (String) request.getAttribute("returnQuery");
-    String escapedReturnQuery = returnQuery != null
-            ? returnQuery.replace("&", "&amp;")
-                    .replace("\"", "&quot;")
-                    .replace("<", "&lt;")
-                    .replace(">", "&gt;")
-            : "";
+    String escapedReturnQuery = h(returnQuery);
     String userInitials = user != null && user.getFirstName() != null && user.getLastName() != null && user.getFirstName().length() > 0 && user.getLastName().length() > 0
             ? (user.getFirstName().substring(0, 1) + user.getLastName().substring(0, 1)).toUpperCase()
             : "SJ";
@@ -38,20 +44,20 @@
 
     <div class="portal-shell">
         <aside class="portal-rail" aria-label="Portal navigation">
-            <div class="brand"><div class="seal">SJ</div><div><h1>YourSJSU</h1><span>Student Portal</span></div></div>
+            <div class="brand"><div class="seal">SJ</div><div class="brand-copy"><h1>YourSJSU</h1><span>Student Portal</span></div></div>
             <nav class="portal-nav">
-                <a href="${pageContext.request.contextPath}/student-dashboard">Overview</a>
-                <a class="active" href="${pageContext.request.contextPath}/search-courses">Course Search</a>
-                <a href="${pageContext.request.contextPath}/schedule">Term Schedule</a>
-                <a href="${pageContext.request.contextPath}/transcript">Transcript</a>
-                <a href="${pageContext.request.contextPath}/financial-summary">Finances</a>
+                <a href="${pageContext.request.contextPath}/student-dashboard" aria-label="Overview"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Overview</span></a>
+                <a class="active" href="${pageContext.request.contextPath}/search-courses" aria-label="Course Search"><span class="nav-icon nav-icon-search" aria-hidden="true"></span><span class="nav-label">Course Search</span></a>
+                <a href="${pageContext.request.contextPath}/schedule" aria-label="Term Schedule"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Term Schedule</span></a>
+                <a href="${pageContext.request.contextPath}/transcript" aria-label="Transcript"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Transcript</span></a>
+                <a href="${pageContext.request.contextPath}/financial-summary" aria-label="Finances"><span class="nav-icon nav-icon-finances" aria-hidden="true"></span><span class="nav-label">Finances</span></a>
             </nav>
             <details class="account-menu-wrap">
                 <summary class="rail-footer">
                     <div class="footer-icon" aria-hidden="true"><%= userInitials %></div>
                     <div class="footer-user">
-                        <strong><%= user != null ? user.getFirstName() + " " + user.getLastName() : "Student" %></strong>
-                        <span><%= user != null ? "ID " + user.getSjsuId() : "YourSJSU" %></span>
+                        <strong><%= h(user != null ? user.getFirstName() + " " + user.getLastName() : "Student") %></strong>
+                        <span><%= h(user != null ? "ID " + user.getSjsuId() : "YourSJSU") %></span>
                     </div>
                 </summary>
                 <div class="account-menu">
@@ -74,10 +80,10 @@
 
             <form method="get" action="${pageContext.request.contextPath}/search-courses" class="search-form">
                 <div class="search-row">
-                    <input type="text" name="keyword" placeholder="Course title keyword" value="<%= request.getAttribute("keyword") != null ? request.getAttribute("keyword") : "" %>">
-                    <input type="text" name="courseNumber" placeholder="Course number, e.g. 157A" value="<%= request.getAttribute("courseNumber") != null ? request.getAttribute("courseNumber") : "" %>">
-                    <input type="text" name="instructorName" placeholder="Instructor name" value="<%= request.getAttribute("instructorName") != null ? request.getAttribute("instructorName") : "" %>">
-                    <input type="text" name="departmentCode" placeholder="Department code, e.g. CS" value="<%= request.getAttribute("departmentCode") != null ? request.getAttribute("departmentCode") : "" %>">
+                    <input type="text" name="keyword" placeholder="Course title keyword" value="<%= h(request.getAttribute("keyword")) %>">
+                    <input type="text" name="courseNumber" placeholder="Course number, e.g. 157A" value="<%= h(request.getAttribute("courseNumber")) %>">
+                    <input type="text" name="instructorName" placeholder="Instructor name" value="<%= h(request.getAttribute("instructorName")) %>">
+                    <input type="text" name="departmentCode" placeholder="Department code, e.g. CS" value="<%= h(request.getAttribute("departmentCode")) %>">
                     <select name="termId">
                         <option value="">All Terms</option>
                         <%
@@ -87,7 +93,7 @@
                                 for (String[] term : terms) {
                                     String sel = term[0].equals(selectedTerm) ? "selected" : "";
                         %>
-                            <option value="<%= term[0] %>" <%= sel %>><%= term[1] %></option>
+                            <option value="<%= h(term[0]) %>" <%= sel %>><%= h(term[1]) %></option>
                         <%      }
                             }
                         %>
@@ -97,10 +103,10 @@
             </form>
 
             <% String error = (String) request.getAttribute("error"); if (error != null) { %>
-                <div class="error-message"><%= error %></div>
+                <div class="error-message"><%= h(error) %></div>
             <% } %>
             <% String success = (String) request.getAttribute("success"); if (success != null) { %>
-                <div class="success-message"><%= success %></div>
+                <div class="success-message"><%= h(success) %></div>
             <% } %>
 
             <% if (results != null && !results.isEmpty()) { %>
@@ -142,14 +148,14 @@
                                 }
                             %>
                             <tr>
-                                <td class="mono"><%= r.getDepartmentCode() %> <%= r.getCourseNumber() %></td>
-                                <td><strong><%= r.getCourseTitle() %></strong></td>
+                                <td class="mono"><%= h(r.getDepartmentCode()) %> <%= h(r.getCourseNumber()) %></td>
+                                <td><strong><%= h(r.getCourseTitle()) %></strong></td>
                                 <td><%= r.getUnits() %></td>
-                                <td><%= r.getTermName() %></td>
-                                <td><%= r.getInstructorName() %></td>
-                                <td><%= r.getMeetingDays() %> <%= r.getStartTime() %> - <%= r.getEndTime() %></td>
-                                <td><%= r.getLocation() %></td>
-                                <td><%= r.getModality() %></td>
+                                <td><%= h(r.getTermName()) %></td>
+                                <td><%= h(r.getInstructorName()) %></td>
+                                <td><%= h(r.getMeetingDays()) %> <%= h(r.getStartTime()) %> - <%= h(r.getEndTime()) %></td>
+                                <td><%= h(r.getLocation()) %></td>
+                                <td><%= h(r.getModality()) %></td>
                                 <td><%= seatsAvail %> / <%= r.getCapacity() %></td>
                                 <td><%= wlAvail %> / <%= r.getWaitlistCapacity() %></td>
                                 <td><span class="<%= statusClass %>"><%= status %></span></td>

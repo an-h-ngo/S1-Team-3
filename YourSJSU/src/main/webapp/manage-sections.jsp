@@ -8,30 +8,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Manage Sections</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260507-sidebar-edge">
 </head>
 <body class="dashboard-page">
-    <nav class="navbar">
-        <div class="nav-brand">YourSJSU</div>
-        <div class="nav-right">
-            <%
-                User currentUser = (User) session.getAttribute("user");
-                if (currentUser != null) {
-            %>
-                <span class="nav-user"><%= currentUser.getFirstName() %> <%= currentUser.getLastName() %></span>
-            <% } %>
-            <form action="${pageContext.request.contextPath}/logout" method="post" class="nav-logout-form">
-                <input type="hidden" name="csrfToken" value="${csrfToken}">
-                <button type="submit" class="btn-logout">Sign Out</button>
-            </form>
-        </div>
-    </nav>
+<%
+    User currentUser = (User) session.getAttribute("user");
+    String userInitials = currentUser != null && currentUser.getFirstName() != null && currentUser.getLastName() != null && currentUser.getFirstName().length() > 0 && currentUser.getLastName().length() > 0
+            ? (currentUser.getFirstName().substring(0, 1) + currentUser.getLastName().substring(0, 1)).toUpperCase()
+            : "SJ";
+%>
+    <div class="portal-shell">
+        <aside class="portal-rail" aria-label="Portal navigation">
+            <div class="brand"><div class="seal">SJ</div><div class="brand-copy"><h1>YourSJSU</h1><span>Faculty Portal</span></div></div>
+            <nav class="portal-nav">
+                <a href="${pageContext.request.contextPath}/faculty-dashboard" aria-label="Faculty Dashboard"><span class="nav-icon nav-icon-faculty" aria-hidden="true"></span><span class="nav-label">Faculty Dashboard</span></a>
+                <a href="${pageContext.request.contextPath}/manage-students" aria-label="Manage Students"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Manage Students</span></a>
+                <a class="active" href="${pageContext.request.contextPath}/manage-sections" aria-label="Manage Sections"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Manage Sections</span></a>
+                <a href="${pageContext.request.contextPath}/complete-classes" aria-label="Complete Classes"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Complete Classes</span></a>
+                <% if (currentUser != null && currentUser.getIsStudent() && currentUser.getIsFaculty()) { %>
+                    <a href="${pageContext.request.contextPath}/select-role" aria-label="Switch Role"><span class="nav-icon nav-icon-switch" aria-hidden="true"></span><span class="nav-label">Switch Role</span></a>
+                <% } %>
+            </nav>
+            <details class="account-menu-wrap">
+                <summary class="rail-footer">
+                    <div class="footer-icon" aria-hidden="true"><%= userInitials %></div>
+                    <div class="footer-user">
+                        <strong><%= currentUser != null ? currentUser.getFirstName() + " " + currentUser.getLastName() : "Faculty" %></strong>
+                        <span><%= currentUser != null ? "ID " + currentUser.getSjsuId() : "YourSJSU" %></span>
+                    </div>
+                </summary>
+                <div class="account-menu">
+                    <a href="${pageContext.request.contextPath}/change-password">Change password</a>
+                    <form action="${pageContext.request.contextPath}/logout" method="post">
+                        <input type="hidden" name="csrfToken" value="${csrfToken}">
+                        <button type="submit" class="signout-action">Sign out</button>
+                    </form>
+                </div>
+            </details>
+        </aside>
 
-    <main class="search-content">
-        <h1>Manage Sections</h1>
-        <p class="dashboard-subtitle" style="text-align:left;margin-bottom:18px;">
-            Faculty tools for adding new sections (FR-D5) and removing existing sections (FR-D6).
-        </p>
+        <main class="portal-main">
+            <header class="topbar">
+                <div class="title-block">
+                    <p>Section administration</p>
+                    <h1>Manage sections</h1>
+                </div>
+            </header>
 
         <%
             String result = request.getParameter("result");
@@ -47,11 +69,10 @@
             <div class="<%= msgClass %>"><%= msg %></div>
         <% } %>
 
-        <!-- ========== ADD A NEW SECTION ========== -->
         <section class="financial-section">
-            <h2>Add a New Section (FR-D5)</h2>
+            <h2>Add a New Section</h2>
 
-            <form method="post" action="${pageContext.request.contextPath}/manage-sections" class="search-form">
+            <form method="post" action="${pageContext.request.contextPath}/manage-sections" class="search-form section-admin-form">
                 <input type="hidden" name="action" value="add">
                 <input type="hidden" name="csrfToken" value="${csrfToken}">
 
@@ -78,8 +99,8 @@
                     </label>
                     <label style="flex:1;">
                         Professor
-                        <select name="facultyId" style="width:100%;padding:10px 12px;">
-                            <option value="">— unassigned —</option>
+                        <select name="facultyId" required style="width:100%;padding:10px 12px;">
+                            <option value="">— select a professor —</option>
                             <% List<String[]> faculty = (List<String[]>) request.getAttribute("faculty");
                                if (faculty != null) for (String[] f : faculty) { %>
                                 <option value="<%= f[0] %>"><%= f[1] %></option>
@@ -91,16 +112,16 @@
                 <div class="search-row">
                     <label style="flex:1;">
                         Meeting Days
-                        <input type="text" name="meetingDays" placeholder="e.g. MW or TR" maxlength="10"
+                        <input type="text" name="meetingDays" placeholder="e.g. MW or TR" maxlength="10" required
                                style="width:100%;padding:10px 12px;">
                     </label>
                     <label style="flex:1;">
                         Start Time
-                        <input type="time" name="startTime" style="width:100%;padding:10px 12px;">
+                        <input type="time" name="startTime" required style="width:100%;padding:10px 12px;">
                     </label>
                     <label style="flex:1;">
                         End Time
-                        <input type="time" name="endTime" style="width:100%;padding:10px 12px;">
+                        <input type="time" name="endTime" required style="width:100%;padding:10px 12px;">
                     </label>
                 </div>
 
@@ -108,12 +129,12 @@
                     <label style="flex:1;">
                         Location
                         <input type="text" name="location" placeholder="e.g. DH 282 or Online"
-                               style="width:100%;padding:10px 12px;">
+                               required style="width:100%;padding:10px 12px;">
                     </label>
                     <label style="flex:1;">
                         Modality
                         <select name="modality" required style="width:100%;padding:10px 12px;">
-                            <option value="in-person">in-person</option>
+                            <option value="in_person">in-person</option>
                             <option value="online">online</option>
                             <option value="hybrid">hybrid</option>
                         </select>
@@ -136,9 +157,8 @@
             </form>
         </section>
 
-        <!-- ========== REMOVE A SECTION ========== -->
         <section class="financial-section">
-            <h2>Existing Sections (FR-D6)</h2>
+            <h2>Existing Sections</h2>
 
             <%
                 List<SectionResult> sections = (List<SectionResult>) request.getAttribute("sections");
@@ -190,6 +210,7 @@
                 </div>
             <% } %>
         </section>
-    </main>
+        </main>
+    </div>
 </body>
 </html>

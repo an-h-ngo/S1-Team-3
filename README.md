@@ -113,6 +113,7 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [PENDING] FR-D7: Update Course Information - Faculty course editing.
 - [Vincent (70%), An (30%)] FR-D8: Change Password (Faculty) - Faculty can change their password through the same bcrypt-backed password change flow used by students.
 - [An] FR-F9: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
+- [An] FR-D9: Complete Classes - Faculty can select one of their assigned sections, view actively enrolled students, assign a final letter grade, and mark the enrollment completed so it appears on the student transcript.
 
 ## Future Work
 

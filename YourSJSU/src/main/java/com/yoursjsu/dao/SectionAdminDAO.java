@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,7 +95,6 @@ public class SectionAdminDAO {
     }
 
     // Inserts a new section into the section table
-    // facultyID is optional, it will pass null if there is no instructor assigned
     // Returns true if one row is inserted
     public boolean addSection(int courseId, int termId, Integer facultyId,
                               String meetingDays, String startTime, String endTime,
@@ -113,11 +111,7 @@ public class SectionAdminDAO {
 
             stmt.setInt(1, courseId);
             stmt.setInt(2, termId);
-            if (facultyId != null) {
-                stmt.setInt(3, facultyId);
-            } else {
-                stmt.setNull(3, Types.INTEGER);
-            }
+            stmt.setInt(3, facultyId);
             stmt.setString(4, meetingDays);
             stmt.setString(5, startTime);
             stmt.setString(6, endTime);

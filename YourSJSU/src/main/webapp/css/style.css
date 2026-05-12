@@ -798,6 +798,55 @@ button,
 
 .search-row { display: contents; }
 
+.section-admin-form.search-form {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.section-admin-form .search-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.section-admin-form label {
+    display: grid;
+    gap: 7px;
+    color: var(--fg);
+    font-weight: 750;
+}
+
+.section-admin-form input,
+.section-admin-form select {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--fg);
+    padding: 10px 12px;
+}
+
+.results-table select {
+    min-height: 38px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--fg);
+    padding: 8px 10px;
+}
+
+.section-admin-form .btn-search {
+    grid-column: 4;
+    justify-self: stretch;
+    width: 100%;
+}
+
 .table-wrapper {
     overflow-x: auto;
     padding: 0;

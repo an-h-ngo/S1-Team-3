@@ -1,12 +1,10 @@
 package com.yoursjsu.servlet;
 import com.yoursjsu.dao.StudentAdminDAO;
-import com.yoursjsu.model.User;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,8 +18,9 @@ public class ManageStudentsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Login + faculty check
-        if (!isFacultyLoggedIn(request, response)) return;
+        if (RoleUtil.requireFaculty(request, response) == null) {
+            return;
+        }
 
         // Pull the full list of users with their overdue-charge counts
         List<StudentAdminDAO.UserWithHolds> rows = dao.getAllUsersWithHoldCounts();
@@ -34,7 +33,14 @@ public class ManageStudentsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (!isFacultyLoggedIn(request, response)) return;
+        if (RoleUtil.requireFaculty(request, response) == null) {
+            return;
+        }
+
+        if (!CsrfUtil.isValid(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         // reads action parameter and the targeted user
         String action = request.getParameter("action");
@@ -64,22 +70,5 @@ public class ManageStudentsServlet extends HttpServlet {
         }
 
         response.sendRedirect(request.getContextPath() + "/manage-students?result=" + resultParam);
-    }
-
-    // returns true if the request is from a logged-in faculty user.
-    // otherwise redireect to login and return false
-    private boolean isFacultyLoggedIn(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return false;
-        }
-        User user = (User) session.getAttribute("user");
-        if (!user.getIsFaculty()) {
-            response.sendRedirect(request.getContextPath() + "/student-dashboard");
-            return false;
-        }
-        return true;
     }
 }

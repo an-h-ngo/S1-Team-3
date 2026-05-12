@@ -27,11 +27,13 @@ public class DashboardDAO {
 
     public List<Course> getCurrentEnrollments(int userId) {
         String sql = "SELECT e.section_id, c.course_title, e.status, t.term_name, "
+                + "CONCAT(u.first_name, ' ', u.last_name) AS instructor_name, "
                 + "s.meeting_days, s.start_time, s.end_time, s.location "
                 + "FROM student_has_enrollment e "
                 + "JOIN section s ON e.section_id = s.section_id "
                 + "JOIN course c ON s.course_id = c.course_id "
                 + "JOIN term t ON s.term_id = t.term_id "
+                + "JOIN `user` u ON s.faculty_id = u.user_id "
                 + "WHERE e.user_id = ? AND e.status = 'enrolled' "
                 + "ORDER BY t.term_id DESC, c.course_title";
         return getCourses(userId, sql);
@@ -39,11 +41,13 @@ public class DashboardDAO {
 
     public List<Course> getActiveWaitlists(int userId) {
         String sql = "SELECT w.section_id, c.course_title, w.status, t.term_name, "
+                + "CONCAT(u.first_name, ' ', u.last_name) AS instructor_name, "
                 + "s.meeting_days, s.start_time, s.end_time, s.location "
                 + "FROM student_waitlist w "
                 + "JOIN section s ON w.section_id = s.section_id "
                 + "JOIN course c ON s.course_id = c.course_id "
                 + "JOIN term t ON s.term_id = t.term_id "
+                + "JOIN `user` u ON s.faculty_id = u.user_id "
                 + "WHERE w.user_id = ? AND w.status = 'waiting' "
                 + "ORDER BY w.requested_at";
         return getCourses(userId, sql);
@@ -59,7 +63,8 @@ public class DashboardDAO {
                     courses.add(new Course(rs.getInt("section_id"), rs.getString("course_title"),
                             rs.getString("status"), rs.getString("term_name"),
                             rs.getString("meeting_days"), rs.getString("start_time"),
-                            rs.getString("end_time"), rs.getString("location")));
+                            rs.getString("end_time"), rs.getString("location"),
+                            rs.getString("instructor_name")));
                 }
             }
         } catch (SQLException e) {

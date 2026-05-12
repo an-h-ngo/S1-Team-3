@@ -27,10 +27,12 @@ public class AuthFilter implements Filter {
         JSP_ROUTES.put("/change-password.jsp", "/change-password");
         JSP_ROUTES.put("/search-courses.jsp", "/search-courses");
         JSP_ROUTES.put("/add-classes.jsp", "/add-classes");
+        JSP_ROUTES.put("/drop-course.jsp", "/drop-course");
         JSP_ROUTES.put("/courses.jsp", "/courses");
         JSP_ROUTES.put("/schedule.jsp", "/schedule");
         JSP_ROUTES.put("/transcript.jsp", "/transcript");
         JSP_ROUTES.put("/financial-summary.jsp", "/financial-summary");
+        JSP_ROUTES.put("/complete-classes.jsp", "/complete-classes");
     }
 
     @Override

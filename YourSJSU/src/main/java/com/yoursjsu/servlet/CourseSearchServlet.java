@@ -31,20 +31,31 @@ public class CourseSearchServlet extends HttpServlet {
 
         String keyword = request.getParameter("keyword");
         String departmentCode = request.getParameter("departmentCode");
+        String courseNumber = request.getParameter("courseNumber");
+        String instructorName = request.getParameter("instructorName");
+        String termId = request.getParameter("termId");
 
-        boolean isSearch = (keyword != null || departmentCode != null);
+        boolean isSearch = (keyword != null || departmentCode != null || courseNumber != null
+                || instructorName != null || termId != null);
 
         if (isSearch) {
             request.setAttribute("keyword", keyword);
             request.setAttribute("departmentCode", departmentCode);
+            request.setAttribute("courseNumber", courseNumber);
+            request.setAttribute("instructorName", instructorName);
+            request.setAttribute("termId", termId);
 
             boolean hasAny = (keyword != null && !keyword.trim().isEmpty())
-                    || (departmentCode != null && !departmentCode.trim().isEmpty());
+                    || (departmentCode != null && !departmentCode.trim().isEmpty())
+                    || (courseNumber != null && !courseNumber.trim().isEmpty())
+                    || (instructorName != null && !instructorName.trim().isEmpty())
+                    || (termId != null && !termId.trim().isEmpty());
 
             if (!hasAny) {
                 request.setAttribute("error", "Please enter a search term.");
             } else {
-                List<SectionResult> results = courseSearchDAO.searchSections(keyword, departmentCode);
+                List<SectionResult> results = courseSearchDAO.searchSections(keyword, departmentCode,
+                        courseNumber, instructorName, termId);
                 request.setAttribute("results", results);
                 request.setAttribute("searched", true);
             }

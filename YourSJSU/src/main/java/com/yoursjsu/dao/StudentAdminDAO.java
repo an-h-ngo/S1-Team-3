@@ -20,6 +20,7 @@ public class StudentAdminDAO {
                    + "                  WHERE ch.user_id = u.user_id "
                    + "                    AND ch.status = 'overdue'), 0) AS hold_count "
                    + "FROM   `user` u "
+                   + "JOIN   student s ON s.user_id = u.user_id "
                    + "ORDER BY u.last_name, u.first_name";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -54,13 +55,17 @@ public class StudentAdminDAO {
             return false;
         }
 
-        String sql = "UPDATE `user` SET status = ? WHERE user_id = ?";
+        String sql = "UPDATE `user` "
+                   + "SET status = ? "
+                   + "WHERE user_id = ? "
+                   + "AND EXISTS (SELECT 1 FROM student s WHERE s.user_id = ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, newStatus);
             stmt.setInt(2, userId);
+            stmt.setInt(3, userId);
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -72,16 +77,30 @@ public class StudentAdminDAO {
     // removes hold on student, marks all charges as paid
     // returns num of rows changed
     public int liftAllHolds(int userId) {
-        String sql = "UPDATE charge "
+        String chargeSql = "UPDATE charge "
                    + "SET    status = 'paid' "
                    + "WHERE  user_id = ? "
-                   + "  AND  status = 'overdue'";
+                   + "  AND  status = 'overdue' "
+                   + "  AND  EXISTS (SELECT 1 FROM student s WHERE s.user_id = charge.user_id)";
+        String studentSql = "UPDATE student "
+                   + "SET hold_status = 'none', registration_status = 'eligible' "
+                   + "WHERE user_id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false);
+            int changed;
+            try (PreparedStatement stmt = conn.prepareStatement(chargeSql)) {
+                stmt.setInt(1, userId);
+                changed = stmt.executeUpdate();
+            }
 
-            stmt.setInt(1, userId);
-            return stmt.executeUpdate();
+            try (PreparedStatement stmt = conn.prepareStatement(studentSql)) {
+                stmt.setInt(1, userId);
+                stmt.executeUpdate();
+            }
+
+            conn.commit();
+            return changed;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,19 +110,37 @@ public class StudentAdminDAO {
     // place hold by marking recent payment as overdue
     // return true if a row is changed
     public boolean placeHold(int userId) {
-        String sql = "UPDATE charge "
+        String chargeSql = "UPDATE charge "
                    + "SET    status = 'overdue' "
                    + "WHERE  charge_id = (SELECT charge_id FROM ( "
                    + "                       SELECT charge_id FROM charge "
                    + "                       WHERE user_id = ? AND status = 'paid' "
+                   + "                         AND EXISTS (SELECT 1 FROM student s WHERE s.user_id = charge.user_id) "
                    + "                       ORDER BY posted_at DESC LIMIT 1 "
                    + "                   ) AS x)";
+        String studentSql = "UPDATE student "
+                   + "SET hold_status = 'financial', registration_status = 'not_eligible' "
+                   + "WHERE user_id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false);
+            int changed;
+            try (PreparedStatement stmt = conn.prepareStatement(chargeSql)) {
+                stmt.setInt(1, userId);
+                changed = stmt.executeUpdate();
+            }
 
-            stmt.setInt(1, userId);
-            return stmt.executeUpdate() > 0;
+            if (changed > 0) {
+                try (PreparedStatement stmt = conn.prepareStatement(studentSql)) {
+                    stmt.setInt(1, userId);
+                    stmt.executeUpdate();
+                }
+                conn.commit();
+                return true;
+            }
+
+            conn.rollback();
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
         }

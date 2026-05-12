@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Financial Summary</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260507-sidebar-edge">
 </head>
 <body class="dashboard-page">
 <%
@@ -28,13 +28,13 @@
 %>
     <div class="portal-shell">
         <aside class="portal-rail" aria-label="Portal navigation">
-            <div class="brand"><div class="seal">SJ</div><div><h1>YourSJSU</h1><span>Student Portal</span></div></div>
+            <div class="brand"><div class="seal">SJ</div><div class="brand-copy"><h1>YourSJSU</h1><span>Student Portal</span></div></div>
             <nav class="portal-nav">
-                <a href="${pageContext.request.contextPath}/student-dashboard">Overview</a>
-                <a href="${pageContext.request.contextPath}/search-courses">Course Search</a>
-                <a href="${pageContext.request.contextPath}/schedule">Term Schedule</a>
-                <a href="${pageContext.request.contextPath}/transcript">Transcript</a>
-                <a class="active" href="${pageContext.request.contextPath}/financial-summary">Finances <span class="nav-badge"><%= owingMoney ? "Due" : "Clear" %></span></a>
+                <a href="${pageContext.request.contextPath}/student-dashboard" aria-label="Overview"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Overview</span></a>
+                <a href="${pageContext.request.contextPath}/search-courses" aria-label="Course Search"><span class="nav-icon nav-icon-search" aria-hidden="true"></span><span class="nav-label">Course Search</span></a>
+                <a href="${pageContext.request.contextPath}/schedule" aria-label="Term Schedule"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Term Schedule</span></a>
+                <a href="${pageContext.request.contextPath}/transcript" aria-label="Transcript"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Transcript</span></a>
+                <a class="active" href="${pageContext.request.contextPath}/financial-summary" aria-label="Finances"><span class="nav-icon nav-icon-finances" aria-hidden="true"></span><span class="nav-label">Finances</span> <span class="nav-badge"><%= owingMoney ? "Due" : "Clear" %></span></a>
             </nav>
             <details class="account-menu-wrap">
                 <summary class="rail-footer">

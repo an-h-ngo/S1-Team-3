@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Student Dashboard</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260507-sidebar-edge">
 </head>
 <body class="dashboard-page">
 <%
@@ -23,6 +23,12 @@
     int enrollmentCount = enrollments != null ? enrollments.size() : 0;
     int waitlistCount = waitlists != null ? waitlists.size() : 0;
     boolean hasBlockingHold = !hasNoHold;
+    String activeTerm = "Current term";
+    if (enrollments != null && !enrollments.isEmpty()) {
+        activeTerm = enrollments.get(0).getTermName();
+    } else if (waitlists != null && !waitlists.isEmpty()) {
+        activeTerm = waitlists.get(0).getTermName();
+    }
     String userInitials = user != null && user.getFirstName() != null && user.getLastName() != null && user.getFirstName().length() > 0 && user.getLastName().length() > 0
             ? (user.getFirstName().substring(0, 1) + user.getLastName().substring(0, 1)).toUpperCase()
             : "SJ";
@@ -31,19 +37,19 @@
         <aside class="portal-rail" aria-label="Portal navigation">
             <div class="brand">
                 <div class="seal">SJ</div>
-                <div>
+                <div class="brand-copy">
                     <h1>YourSJSU</h1>
                     <span>Student Portal</span>
                 </div>
             </div>
             <nav class="portal-nav">
-                <a class="active" href="${pageContext.request.contextPath}/student-dashboard">Overview</a>
-                <a href="${pageContext.request.contextPath}/search-courses">Course Search</a>
-                <a href="${pageContext.request.contextPath}/schedule">Term Schedule <span class="nav-badge"><%= enrollmentCount %></span></a>
-                <a href="${pageContext.request.contextPath}/transcript">Transcript</a>
-                <a href="${pageContext.request.contextPath}/financial-summary">Finances</a>
+                <a class="active" href="${pageContext.request.contextPath}/student-dashboard" aria-label="Overview"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Overview</span></a>
+                <a href="${pageContext.request.contextPath}/search-courses" aria-label="Course Search"><span class="nav-icon nav-icon-search" aria-hidden="true"></span><span class="nav-label">Course Search</span></a>
+                <a href="${pageContext.request.contextPath}/schedule" aria-label="Term Schedule"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Term Schedule</span> <span class="nav-badge"><%= enrollmentCount %></span></a>
+                <a href="${pageContext.request.contextPath}/transcript" aria-label="Transcript"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Transcript</span></a>
+                <a href="${pageContext.request.contextPath}/financial-summary" aria-label="Finances"><span class="nav-icon nav-icon-finances" aria-hidden="true"></span><span class="nav-label">Finances</span></a>
                 <% if (user != null && user.getIsStudent() && user.getIsFaculty()) { %>
-                    <a href="${pageContext.request.contextPath}/select-role">Switch Role</a>
+                    <a href="${pageContext.request.contextPath}/select-role" aria-label="Switch Role"><span class="nav-icon nav-icon-switch" aria-hidden="true"></span><span class="nav-label">Switch Role</span></a>
                 <% } %>
             </nav>
             <details class="account-menu-wrap">
@@ -72,30 +78,58 @@
                 </div>
             </header>
 
-            <section class="metric-grid">
-                <article class="metric-card">
-                    <span class="label">Enrolled courses</span>
-                    <div class="value"><%= enrollmentCount %></div>
-                    <small>Current active enrollments</small>
-                </article>
-                <article class="metric-card">
-                    <span class="label">Waitlisted</span>
-                    <div class="value"><%= waitlistCount %></div>
-                    <small>Pending seat availability</small>
-                </article>
-                <article class="metric-card">
-                    <span class="label">Hold status</span>
-                    <div class="value"><%= hasBlockingHold ? "Hold" : "Clear" %></div>
-                    <small><%= holdStatus %></small>
-                </article>
-                <article class="metric-card">
-                    <span class="label">Registration</span>
-                    <div class="value"><%= registrationStatus %></div>
-                    <small>Updated from student records</small>
-                </article>
-            </section>
-
             <section class="grid overview-grid" style="margin-top:16px">
+                <article class="card enrollment-table-card">
+                    <div class="term-table-header">
+                        <div>
+                            <span class="eyebrow">Current enrollments</span>
+                            <h2><%= activeTerm %></h2>
+                        </div>
+                        <span class="pill green"><%= enrollmentCount %> enrolled</span>
+                    </div>
+                    <% if ((enrollments != null && !enrollments.isEmpty()) || (waitlists != null && !waitlists.isEmpty())) { %>
+                        <div class="table-wrapper compact-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Class</th>
+                                        <th>Instructor</th>
+                                        <th>Meeting</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (enrollments != null) {
+                                        for (Course c : enrollments) { %>
+                                            <tr>
+                                                <td><strong><%= c.getCourseTitle() %></strong></td>
+                                                <td><%= c.getInstructorName() %></td>
+                                                <td><%= c.getMeetingDays() %> <%= c.getStartTime() %> - <%= c.getEndTime() %></td>
+                                                <td><%= c.getLocation() %></td>
+                                                <td><span class="pill green">Enrolled</span></td>
+                                            </tr>
+                                    <%  }
+                                    }
+                                    if (waitlists != null) {
+                                        for (Course c : waitlists) { %>
+                                            <tr>
+                                                <td><strong><%= c.getCourseTitle() %></strong></td>
+                                                <td><%= c.getInstructorName() %></td>
+                                                <td><%= c.getMeetingDays() %> <%= c.getStartTime() %> - <%= c.getEndTime() %></td>
+                                                <td><%= c.getLocation() %></td>
+                                                <td><span class="pill gold">Waitlist</span></td>
+                                            </tr>
+                                    <%  }
+                                    } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <p class="no-results">No active enrollments for this term.</p>
+                    <% } %>
+                </article>
+
                 <article class="card">
                     <span class="eyebrow">Today's priority</span>
                     <div class="accent-line"></div>
@@ -124,24 +158,28 @@
                         </div>
                     </div>
                 </article>
+            </section>
 
-                <article class="card flat">
-                    <h2>Current enrollments</h2>
-                    <div class="list">
-                        <% if (enrollments != null && !enrollments.isEmpty()) {
-                            for (Course c : enrollments) { %>
-                                <div class="row">
-                                    <div>
-                                        <h4><%= c.getCourseTitle() %></h4>
-                                        <p><%= c.getTermName() %> - <%= c.getMeetingDays() %> <%= c.getStartTime() %> - <%= c.getEndTime() %> - <%= c.getLocation() %></p>
-                                    </div>
-                                    <span class="pill green">Enrolled</span>
-                                </div>
-                        <%  }
-                        } else { %>
-                            <p class="no-results">No active enrollments.</p>
-                        <% } %>
-                    </div>
+            <section class="metric-grid" style="margin-top:16px">
+                <article class="metric-card">
+                    <span class="label">Enrolled courses</span>
+                    <div class="value"><%= enrollmentCount %></div>
+                    <small>Current active enrollments</small>
+                </article>
+                <article class="metric-card">
+                    <span class="label">Waitlisted</span>
+                    <div class="value"><%= waitlistCount %></div>
+                    <small>Pending seat availability</small>
+                </article>
+                <article class="metric-card">
+                    <span class="label">Hold status</span>
+                    <div class="value"><%= hasBlockingHold ? "Hold" : "Clear" %></div>
+                    <small><%= holdStatus %></small>
+                </article>
+                <article class="metric-card">
+                    <span class="label">Registration</span>
+                    <div class="value"><%= registrationStatus %></div>
+                    <small>Updated from student records</small>
                 </article>
             </section>
 

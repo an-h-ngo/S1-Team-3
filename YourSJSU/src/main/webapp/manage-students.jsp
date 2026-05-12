@@ -8,30 +8,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSJSU - Manage Students</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260505-ui3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=20260507-sidebar-edge">
 </head>
 <body class="dashboard-page">
-    <nav class="navbar">
-        <div class="nav-brand">YourSJSU</div>
-        <div class="nav-right">
-            <%
-                User currentUser = (User) session.getAttribute("user");
-                if (currentUser != null) {
-            %>
-                <span class="nav-user"><%= currentUser.getFirstName() %> <%= currentUser.getLastName() %></span>
-            <% } %>
-            <form action="${pageContext.request.contextPath}/logout" method="post" class="nav-logout-form">
-                <input type="hidden" name="csrfToken" value="${csrfToken}">
-                <button type="submit" class="btn-logout">Sign Out</button>
-            </form>
-        </div>
-    </nav>
+<%
+    User currentUser = (User) session.getAttribute("user");
+    String userInitials = currentUser != null && currentUser.getFirstName() != null && currentUser.getLastName() != null && currentUser.getFirstName().length() > 0 && currentUser.getLastName().length() > 0
+            ? (currentUser.getFirstName().substring(0, 1) + currentUser.getLastName().substring(0, 1)).toUpperCase()
+            : "SJ";
+%>
+    <div class="portal-shell">
+        <aside class="portal-rail" aria-label="Portal navigation">
+            <div class="brand"><div class="seal">SJ</div><div class="brand-copy"><h1>YourSJSU</h1><span>Faculty Portal</span></div></div>
+            <nav class="portal-nav">
+                <a href="${pageContext.request.contextPath}/faculty-dashboard" aria-label="Faculty Dashboard"><span class="nav-icon nav-icon-faculty" aria-hidden="true"></span><span class="nav-label">Faculty Dashboard</span></a>
+                <a class="active" href="${pageContext.request.contextPath}/manage-students" aria-label="Manage Students"><span class="nav-icon nav-icon-overview" aria-hidden="true"></span><span class="nav-label">Manage Students</span></a>
+                <a href="${pageContext.request.contextPath}/manage-sections" aria-label="Manage Sections"><span class="nav-icon nav-icon-schedule" aria-hidden="true"></span><span class="nav-label">Manage Sections</span></a>
+                <a href="${pageContext.request.contextPath}/complete-classes" aria-label="Complete Classes"><span class="nav-icon nav-icon-transcript" aria-hidden="true"></span><span class="nav-label">Complete Classes</span></a>
+                <% if (currentUser != null && currentUser.getIsStudent() && currentUser.getIsFaculty()) { %>
+                    <a href="${pageContext.request.contextPath}/select-role" aria-label="Switch Role"><span class="nav-icon nav-icon-switch" aria-hidden="true"></span><span class="nav-label">Switch Role</span></a>
+                <% } %>
+            </nav>
+            <details class="account-menu-wrap">
+                <summary class="rail-footer">
+                    <div class="footer-icon" aria-hidden="true"><%= userInitials %></div>
+                    <div class="footer-user">
+                        <strong><%= currentUser != null ? currentUser.getFirstName() + " " + currentUser.getLastName() : "Faculty" %></strong>
+                        <span><%= currentUser != null ? "ID " + currentUser.getSjsuId() : "YourSJSU" %></span>
+                    </div>
+                </summary>
+                <div class="account-menu">
+                    <a href="${pageContext.request.contextPath}/change-password">Change password</a>
+                    <form action="${pageContext.request.contextPath}/logout" method="post">
+                        <input type="hidden" name="csrfToken" value="${csrfToken}">
+                        <button type="submit" class="signout-action">Sign out</button>
+                    </form>
+                </div>
+            </details>
+        </aside>
 
-    <main class="search-content">
-        <h1>Manage Students</h1>
-        <p class="dashboard-subtitle" style="text-align:left;margin-bottom:18px;">
-            Faculty tools for granting/denying access (FR-D4) and lifting/placing financial holds (FR-D3).
-        </p>
+        <main class="portal-main">
+            <header class="topbar">
+                <div class="title-block">
+                    <p>Student administration</p>
+                    <h1>Manage students</h1>
+                </div>
+            </header>
 
         <%
             String result = request.getParameter("result");
@@ -66,8 +88,8 @@
                             <th>Email</th>
                             <th>Status</th>
                             <th>Holds</th>
-                            <th>Access (FR-D4)</th>
-                            <th>Holds (FR-D3)</th>
+                            <th>Access</th>
+                            <th>Holds</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,6 +112,7 @@
                             </td>
                             <td>
                                 <form method="post" action="${pageContext.request.contextPath}/manage-students" style="margin:0;display:inline;">
+                                    <input type="hidden" name="csrfToken" value="${csrfToken}">
                                     <input type="hidden" name="userId" value="<%= u.getUserId() %>">
                                     <input type="hidden" name="action" value="<%= isActive ? "deactivate" : "activate" %>">
                                     <button type="submit" class="btn-search" style="font-size:12px;padding:6px 10px;">
@@ -99,6 +122,7 @@
                             </td>
                             <td>
                                 <form method="post" action="${pageContext.request.contextPath}/manage-students" style="margin:0;display:inline;">
+                                    <input type="hidden" name="csrfToken" value="${csrfToken}">
                                     <input type="hidden" name="userId" value="<%= u.getUserId() %>">
                                     <input type="hidden" name="action" value="lift-holds">
                                     <button type="submit" class="btn-search" style="font-size:12px;padding:6px 10px;background:#2e7d32;">
@@ -106,6 +130,7 @@
                                     </button>
                                 </form>
                                 <form method="post" action="${pageContext.request.contextPath}/manage-students" style="margin:0;display:inline;">
+                                    <input type="hidden" name="csrfToken" value="${csrfToken}">
                                     <input type="hidden" name="userId" value="<%= u.getUserId() %>">
                                     <input type="hidden" name="action" value="place-hold">
                                     <button type="submit" class="btn-search" style="font-size:12px;padding:6px 10px;background:#b71c1c;">
@@ -119,6 +144,7 @@
                 </table>
             </div>
         <% } %>
-    </main>
+        </main>
+    </div>
 </body>
 </html>
