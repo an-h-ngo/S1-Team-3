@@ -45,6 +45,8 @@ public class LoginServlet extends HttpServlet {
         // Get the user inputs
         String identifier = request.getParameter("identifier");
         String password = request.getParameter("password");
+        String requestedRole = request.getParameter("role");
+        request.setAttribute("selectedRole", requestedRole);
 
         // Check if both fields are filled in
         if (identifier == null || identifier.trim().isEmpty()
@@ -77,6 +79,12 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        if (isKnownRole(requestedRole) && !isRoleAvailable(user, requestedRole)) {
+            request.setAttribute("error", "Invalid credentials.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+
         if (PasswordUtil.needsBcryptMigration(storedPassword)) {
             boolean migrated = credentialDAO.updatePasswordHash(user.getUserId(), PasswordUtil.hashPassword(password));
             if (!migrated) {
@@ -96,6 +104,9 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         session.setAttribute("user", user);
         session.removeAttribute("activeRole");
+        if (isKnownRole(requestedRole)) {
+            session.setAttribute("activeRole", requestedRole);
+        }
         session.setMaxInactiveInterval(60 * 60); // log them out after 1 hour of inactivity
         CsrfUtil.getToken(session);
         if (!sessionDAO.createSession(session.getId(), user.getUserId())) {
@@ -108,5 +119,14 @@ public class LoginServlet extends HttpServlet {
 
         // OSend to dashboard
         RoleUtil.redirectByRole(user, request, response);
+    }
+
+    private boolean isKnownRole(String role) {
+        return RoleUtil.STUDENT.equals(role) || RoleUtil.FACULTY.equals(role);
+    }
+
+    private boolean isRoleAvailable(User user, String role) {
+        return (RoleUtil.STUDENT.equals(role) && user.getIsStudent())
+                || (RoleUtil.FACULTY.equals(role) && user.getIsFaculty());
     }
 }
