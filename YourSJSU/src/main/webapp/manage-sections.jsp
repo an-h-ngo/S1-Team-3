@@ -61,6 +61,7 @@
                 String msg;
                 String msgClass;
                 if      ("added".equals(result))        { msg = "Section added.";                          msgClass = "success-message"; }
+                else if ("updated".equals(result))      { msg = "Section updated.";                        msgClass = "success-message"; }
                 else if ("ok".equals(result))           { msg = "Section removed.";                        msgClass = "success-message"; }
                 else if ("has-students".equals(result)) { msg = "Cannot remove — students are enrolled or waitlisted in this section."; msgClass = "error-message"; }
                 else if ("bad-input".equals(result))    { msg = "Invalid form input. Please fill in every field with the correct type."; msgClass = "error-message"; }
@@ -184,26 +185,53 @@
                             <% for (SectionResult r : sections) {
                                 String label = r.getDepartmentCode() + " " + r.getCourseNumber() + " - " + r.getCourseTitle();
                             %>
-                            <tr>
-                                <td><%= r.getDepartmentCode() %> <%= r.getCourseNumber() %></td>
-                                <td><%= r.getCourseTitle() %></td>
-                                <td><%= r.getTermName() %></td>
-                                <td><%= r.getMeetingDays() %> <%= r.getStartTime() %> - <%= r.getEndTime() %></td>
-                                <td><%= r.getLocation() %></td>
-                                <td><%= r.getModality() %></td>
-                                <td><%= r.getCapacity() %></td>
-                                <td>
-                                    <form method="post"
-                                          action="${pageContext.request.contextPath}/manage-sections"
-                                          onsubmit="return confirm('Remove <%= label.replace("'", "") %>?');"
-                                          style="margin:0;">
-                                        <input type="hidden" name="action" value="remove">
-                                        <input type="hidden" name="sectionId" value="<%= r.getSectionId() %>">
-                                        <input type="hidden" name="csrfToken" value="${csrfToken}">
-                                        <button type="submit" class="btn-drop">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
+                            <tr style="cursor:pointer;" 
+    							onclick="if(event.target.closest('form,button')==null) window.location='${pageContext.request.contextPath}/update-section?sectionId=<%= r.getSectionId() %>'">
+							
+							    <td><%= r.getDepartmentCode() %> <%= r.getCourseNumber() %></td>
+							
+							    <td><%= r.getCourseTitle() %></td>
+							
+							    <td><%= r.getTermName() %></td>
+							
+							    <td>
+							        <%= r.getMeetingDays() %>
+							        <%= r.getStartTime() %> -
+							        <%= r.getEndTime() %>
+							    </td>
+							
+							    <td><%= r.getLocation() %></td>
+							
+							    <td><%= r.getModality() %></td>
+							
+							    <td><%= r.getCapacity() %></td>
+							
+							    <td>
+							        <form method="post"
+							              action="${pageContext.request.contextPath}/manage-sections"
+							              onsubmit="event.stopPropagation(); return confirm('Remove section?');"
+							              style="margin:0;">
+							
+							            <input type="hidden" name="action" value="remove">
+							
+							            <input type="hidden"
+							                   name="sectionId"
+							                   value="<%= r.getSectionId() %>">
+							
+							            <input type="hidden"
+							                   name="csrfToken"
+							                   value="${csrfToken}">
+							
+							            <button type="submit"
+							                    class="btn-drop"
+							                    onclick="event.stopPropagation();">
+							
+							                Remove
+							
+							            </button>
+							        </form>
+							    </td>
+							</tr>
                             <% } %>
                         </tbody>
                     </table>
