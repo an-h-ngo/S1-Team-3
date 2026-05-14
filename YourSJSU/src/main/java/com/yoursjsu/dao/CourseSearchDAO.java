@@ -1,4 +1,4 @@
-package com.yoursjsu.dao;
+package YourSJSU.src.main.java.com.yoursjsu.dao;
 import com.yoursjsu.model.SectionResult;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,6 +36,104 @@ public class CourseSearchDAO {
         return terms;
     }
 
+    public SectionResult getSectionById(int sectionId) {
+        String sql = "SELECT s.section_id, d.department_code, c.course_number, c.course_title, c.units, "
+                + "t.term_name, CONCAT(u.first_name, ' ', u.last_name) AS instructor_name, "
+                + "s.meeting_days, s.start_time, s.end_time, "
+                + "s.location, s.modality, s.capacity, s.waitlist_capacity, "
+                + "COALESCE(e.enrolled_count, 0) AS enrolled_count, "
+                + "COALESCE(w.waitlist_count, 0) AS waitlist_count "
+ 
+                + "FROM section s "
+ 
+                + "JOIN course c ON s.course_id = c.course_id "
+                + "JOIN department d ON c.department_id = d.department_id "
+                + "JOIN term t ON s.term_id = t.term_id "
+                + "JOIN `user` u ON s.faculty_id = u.user_id "
+                + "LEFT JOIN (SELECT section_id, COUNT(*) AS enrolled_count "
+                + "           FROM student_has_enrollment WHERE status = 'enrolled' GROUP BY section_id) e "
+                + "ON s.section_id = e.section_id "
+                + "LEFT JOIN (SELECT section_id, COUNT(*) AS waitlist_count "
+                + "           FROM student_waitlist WHERE status = 'waiting' GROUP BY section_id) w "
+                + "ON s.section_id = w.section_id "
+ 
+                + "WHERE s.section_id = ?";
+ 
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+ 
+            stmt.setInt(1, sectionId);
+ 
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    SectionResult r = new SectionResult();
+                    r.setSectionId(rs.getInt("section_id"));
+                    r.setDepartmentCode(rs.getString("department_code"));
+                    r.setCourseNumber(rs.getString("course_number"));
+                    r.setCourseTitle(rs.getString("course_title"));
+                    r.setUnits(rs.getInt("units"));
+                    r.setTermName(rs.getString("term_name"));
+                    r.setInstructorName(rs.getString("instructor_name"));
+                    r.setMeetingDays(rs.getString("meeting_days"));
+                    r.setStartTime(rs.getString("start_time"));
+                    r.setEndTime(rs.getString("end_time"));
+                    r.setLocation(rs.getString("location"));
+                    r.setModality(rs.getString("modality"));
+                    r.setCapacity(rs.getInt("capacity"));
+                    r.setWaitlistCapacity(rs.getInt("waitlist_capacity"));
+                    r.setEnrolledCount(rs.getInt("enrolled_count"));
+                    r.setWaitlistCount(rs.getInt("waitlist_count"));
+                    return r;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String getEnrollmentStatus(int userId, int sectionId) {
+        
+        String enrolledSql =
+                "SELECT 1 FROM student_has_enrollment "
+                + "WHERE user_id = ? AND section_id = ? AND status = 'enrolled' "
+                + "LIMIT 1";
+ 
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(enrolledSql)) {
+ 
+            stmt.setInt(1, userId);
+            stmt.setInt(2, sectionId);
+ 
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return "Enrolled";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+ 
+        
+        String waitlistSql =
+                "SELECT 1 FROM student_waitlist "
+                + "WHERE user_id = ? AND section_id = ? AND status = 'waiting' "
+                + "LIMIT 1";
+ 
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(waitlistSql)) {
+ 
+            stmt.setInt(1, userId);
+            stmt.setInt(2, sectionId);
+ 
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return "Waitlisted";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+ 
+        return "Not Enrolled";
+    }
+    
     public List<SectionResult> searchSections(String keyword, String departmentCode,
                                               String courseNumber, String instructorName,
                                               String termId) {

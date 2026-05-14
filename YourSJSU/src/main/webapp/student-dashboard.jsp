@@ -88,46 +88,85 @@
                         <span class="pill green"><%= enrollmentCount %> enrolled</span>
                     </div>
                     <% if ((enrollments != null && !enrollments.isEmpty()) || (waitlists != null && !waitlists.isEmpty())) { %>
-                        <div class="table-wrapper compact-table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Class</th>
-                                        <th>Instructor</th>
-                                        <th>Meeting</th>
-                                        <th>Location</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% if (enrollments != null) {
-                                        for (Course c : enrollments) { %>
-                                            <tr>
-                                                <td><strong><%= c.getCourseTitle() %></strong></td>
-                                                <td><%= c.getInstructorName() %></td>
-                                                <td><%= c.getMeetingDays() %> <%= c.getStartTime() %> - <%= c.getEndTime() %></td>
-                                                <td><%= c.getLocation() %></td>
-                                                <td><span class="pill green">Enrolled</span></td>
-                                            </tr>
-                                    <%  }
-                                    }
-                                    if (waitlists != null) {
-                                        for (Course c : waitlists) { %>
-                                            <tr>
-                                                <td><strong><%= c.getCourseTitle() %></strong></td>
-                                                <td><%= c.getInstructorName() %></td>
-                                                <td><%= c.getMeetingDays() %> <%= c.getStartTime() %> - <%= c.getEndTime() %></td>
-                                                <td><%= c.getLocation() %></td>
-                                                <td><span class="pill gold">Waitlist</span></td>
-                                            </tr>
-                                    <%  }
-                                    } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    <% } else { %>
-                        <p class="no-results">No active enrollments for this term.</p>
-                    <% } %>
+					    <div class="table-wrapper compact-table">
+					        <table>
+					            <thead>
+					                <tr>
+					                    <th>Class</th>
+					                    <th>Instructor</th>
+					                    <th>Meeting</th>
+					                    <th>Location</th>
+					                    <th>Status</th>
+					                </tr>
+					            </thead>
+					            <tbody>
+					                <% if (enrollments != null) {
+					                    for (Course c : enrollments) {
+					                        String href = request.getContextPath()
+					                                      + "/course-information?sectionId="
+					                                      + c.getSectionId();
+					                %>
+					                    <tr class="clickable-row">
+					                        <td>
+					                            <a class="row-link" href="<%= href %>">
+					                                <strong><%= c.getCourseTitle() %></strong>
+					                            </a>
+					                        </td>
+					                        <td>
+					                            <a class="row-link" href="<%= href %>"><%= c.getInstructorName() %></a>
+					                        </td>
+					                        <td>
+					                            <a class="row-link" href="<%= href %>">
+					                                <%= c.getMeetingDays() %> <%= c.getStartTime() %> – <%= c.getEndTime() %>
+					                            </a>
+					                        </td>
+					                        <td>
+					                            <a class="row-link" href="<%= href %>"><%= c.getLocation() %></a>
+					                        </td>
+					                        <td class="status-cell">
+					                            <a class="row-link" href="<%= href %>"></a><%-- invisible click layer --%>
+					                            <span class="pill green">Enrolled</span>
+					                        </td>
+					                    </tr>
+					                <%  }
+					                } %>
+					                <% if (waitlists != null) {
+					                    for (Course c : waitlists) {
+					                        String href = request.getContextPath()
+					                                      + "/course-information?sectionId="
+					                                      + c.getSectionId();
+					                %>
+					                    <tr class="clickable-row">
+					                        <td>
+					                            <a class="row-link" href="<%= href %>">
+					                                <strong><%= c.getCourseTitle() %></strong>
+					                            </a>
+					                        </td>
+					                        <td>
+					                            <a class="row-link" href="<%= href %>"><%= c.getInstructorName() %></a>
+					                        </td>
+					                        <td>
+					                            <a class="row-link" href="<%= href %>">
+					                                <%= c.getMeetingDays() %> <%= c.getStartTime() %> – <%= c.getEndTime() %>
+					                            </a>
+					                        </td>
+					                        <td>
+					                            <a class="row-link" href="<%= href %>"><%= c.getLocation() %></a>
+					                        </td>
+					                        <td class="status-cell">
+					                            <a class="row-link" href="<%= href %>"></a><%-- invisible click layer --%>
+					                            <span class="pill gold">Waitlist</span>
+					                        </td>
+					                    </tr>
+					                <%  }
+					                } %>
+					
+					            </tbody>
+					        </table>
+					    </div>
+					<% } else { %>
+					    <p class="no-results">No active enrollments for this term.</p>
+					<% } %>
                 </article>
 
                 <article class="card">
