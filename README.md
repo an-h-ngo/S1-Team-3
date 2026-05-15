@@ -21,7 +21,6 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 - payment
 - prerequisite
 - section
-- section
 - session
 - student
 - student_has_enrollment
@@ -52,7 +51,7 @@ YourSJSU is a reimagined student and faculty portal built as a Java web applicat
 
 ```bash
   1. Open MySQL Workbench and connect to the local MySQL server
-  2. Run the full yoursjsu database script, which will create all the tables and sample data
+  2. Run the full YourSJSU_SQLDatabase.sql script, which will create all the tables and sample data
   3. Optional: run database/demo_accounts.sql to add safe local demo accounts
   4. Update src/main/java/com/yoursjsu/dao/DatabaseConnection.java with your MySQL Workbench password
 ```
@@ -82,9 +81,10 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - Right-click the project > **Properties** > **Java Build Path** > **Libraries**
 - Under **Classpath**, click **Add Library** > **Server Runtime** > select **Apache Tomcat v9.0**
 - In **Eclipse**, click **Project** > **Clean**, select **YourSJSU** > **OK**, wait until the bottom-right build progress is done
-- Open file explorer to C:\tomcat8\bin\ and paste the files from `\YourSJSU\build\classes\com\` to `C:\tomcat8\webapps\YourSJSU\WEB-INF\classes\com\`
-- Then copy the files from `\YourSJSU\src\main\webapp\` to `C:\tomcat8\webapps\YourSJSU\`
-- Lastly, copy the files from `YourSJSU\src\main\webapp\css\style.css` to `C:\tomcat8\webapps\YourSJSU\css\style.css`
+- Open file explorer to `C:\tomcat8\webapps\YourSJSU\WEB-INF\classes\com\` and paste the files from `\YourSJSU\build\classes\com\` to `C:\tomcat8\webapps\YourSJSU\WEB-INF\classes\com\`
+- Copy the files from `\YourSJSU\src\main\webapp\` to `C:\tomcat8\webapps\YourSJSU\`
+- Copy the files from `YourSJSU\src\main\webapp\css\style.css` to `C:\tomcat8\webapps\YourSJSU\css\style.css`
+- Copy the JARs from `YourSJSU\src\main\webapp\WEB-INF\lib\*.jar` to `C:\tomcat8\webapps\YourSJSU\WEB-INF\lib\`
 - Run **startup.bat** in `C:\tomcat8\bin\`
 - Go to **http://localhost:8080/YourSJSU/**, and the login page should load
 - Run **shutdown.bat** in `C:\tomcat8\bin\` to shutdown the tomcat server
@@ -110,5 +110,5 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [Vincent] FR-D6: Removing Classes - Faculty class removal.
 - [Nathan] FR-D7: Update Course Information - Faculty class editing, including changing start/end time, course title, and professor.
 - [Vincent (70%), An (30%)] FR-D8: Change Password (Faculty) - Faculty can change their password through the same bcrypt-backed password change flow used by students.
-- [An] FR-F9: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
-- [An] FR-D9: Complete Classes - Faculty can select one of their assigned sections, view actively enrolled students, assign a final letter grade, and mark the enrollment completed so it appears on the student transcript.
+- [An] FR-D9: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
+- [An] FR-D10: Complete Classes - Faculty can select one of their assigned sections, view actively enrolled students, assign a final letter grade, and mark the enrollment completed so it appears on the student transcript.
