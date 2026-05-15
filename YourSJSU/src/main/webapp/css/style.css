@@ -1433,3 +1433,176 @@ tbody tr:hover { background: #f8fbff; }
         animation-duration: 0.01ms !important;
     }
 }
+
+
+.course-hero {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.course-hero-left  { flex: 1 1 0; min-width: 0; }
+.course-hero-right {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+.course-hero-left .eyebrow {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+.course-hero-left h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+    line-height: 1.25;
+    color: #111827;
+}
+.hero-sub {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+.section-id-badge {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #4f8ef7;
+    line-height: 1;
+}
+.pill-lg {
+    font-size: 0.78rem;
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+.detail-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 22px 26px;
+}
+.detail-card h3 {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #9ca3af;
+    margin: 0 0 16px;
+}
+
+.kv-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+.kv-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 0.86rem;
+    border-bottom: 1px solid #f3f4f6;
+    padding: 10px 0;
+    color: #111827;
+}
+.kv-list li:first-child { padding-top: 0; }
+.kv-list li:last-child  { border-bottom: none; padding-bottom: 0; }
+.kv-list .k { color: #6b7280; white-space: nowrap; flex-shrink: 0; }
+.kv-list .v { font-weight: 600; text-align: right; word-break: break-word; color: #111827; }
+
+.cap-section { margin-top: 16px; padding-top: 14px; border-top: 1px solid #f3f4f6; }
+.cap-bar-track {
+    height: 7px;
+    border-radius: 4px;
+    background: #e5e7eb;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+.cap-bar-fill { height: 100%; border-radius: 4px; background: #4f8ef7; }
+.cap-bar-fill.warn { background: #e8a020; }
+.cap-bar-fill.full { background: #d94f4f; }
+.cap-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    color: #6b7280;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-decoration: none;
+    margin-bottom: 18px;
+    transition: color 0.15s;
+}
+.back-link:hover { color: #111827; }
+.back-link::before { content: "←"; }
+
+.modality-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: #f3f4f6;
+    color: #374151;
+}
+      
+   .compact-table tbody tr.clickable-row td {
+       position: relative;
+       padding: 0;           
+   }
+
+   .compact-table tbody tr.clickable-row td a.row-link {
+       display:         block;
+       position:        absolute;
+       inset:           0;          
+       padding:         10px 12px;  
+       color:           inherit;
+       text-decoration: none;
+       white-space:     nowrap;
+       overflow:        hidden;
+       text-overflow:   ellipsis;
+   }
+
+   .compact-table tbody tr.clickable-row {
+       min-height: 44px;
+   }
+
+   .compact-table tbody tr.clickable-row:hover {
+       background: var(--surface-hover, rgba(255,255,255,0.04));
+       cursor: pointer;
+   }
+
+   .compact-table tbody tr.clickable-row td .pill {
+       position: relative;
+       z-index:  1;
+       pointer-events: none;  
+   }
+
+   .compact-table tbody tr.clickable-row td.status-cell {
+       text-align: center;
+       vertical-align: middle;
+   }
