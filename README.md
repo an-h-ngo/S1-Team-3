@@ -101,6 +101,7 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [Nathan (50%), An (50%)] FR-S8: View Transcript - Students can view their GPA, completed classes, grades, and term names. Dropped in-progress classes remain in the database but are not shown on the transcript.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
 - [Vincent (70%), An (30%)] FR-S10: Password change - Users can change their password, which stores a bcrypt hash, updates the last-changed timestamp, rejects same-password updates, invalidates the web session, and redirects them to login.
+- [Nathan] FS-11: Course Information - Students can view the course information details including the start/end time, waitlist capacity, and more.
 
 ## Implemented Faculty Functional Requirements (Updated 5/11/2026)
 
@@ -110,11 +111,7 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [Vincent] FR-D4: Denying/Granting Access to Students - Faculty can activate or deactivate student accounts through Manage Students.
 - [Vincent] FR-D5: Adding Classes - Faculty class creation.
 - [Vincent] FR-D6: Removing Classes - Faculty class removal.
-- [PENDING] FR-D7: Update Course Information - Faculty course editing.
+- [Nathan] FR-D7: Update Course Information - Faculty class editing, including changing start/end time, course title, and professor.
 - [Vincent (70%), An (30%)] FR-D8: Change Password (Faculty) - Faculty can change their password through the same bcrypt-backed password change flow used by students.
 - [An] FR-F9: Faculty Dashboard - Faculty can view title, department, and assigned teaching sections with enrolled counts.
 - [An] FR-D9: Complete Classes - Faculty can select one of their assigned sections, view actively enrolled students, assign a final letter grade, and mark the enrollment completed so it appears on the student transcript.
-
-## Future Work
-
-- FR-D7: Faculty update course information.
