@@ -102,7 +102,6 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
 - [Vincent (70%), An (30%)] FR-S10: Password change - Users can change their password, which stores a bcrypt hash, updates the last-changed timestamp, rejects same-password updates, invalidates the web session, and redirects them to login.
 - [Nathan] FR-S11: Course Information - Students can view the course information details including the start/end time, waitlist capacity, and more.
-
 - [Vincent (50%), An (50%)] FR-D1: Authentication (Faculty) - Faculty can log in, log out, select the faculty role when applicable, and access faculty-only pages through the shared authentication and role-checking flow.
 - [An] FR-D2: View Student's Profile - Faculty can view student profile rows through Manage Students, including name, SJSU ID, email, account status, and hold count.
 - [Vincent] FR-D3: Lift/Place Holds - Faculty can place a financial hold on a student account or lift existing holds through Manage Students.
