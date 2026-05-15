@@ -101,7 +101,7 @@ Demo passwords are stored as bcrypt hashes in `database/demo_accounts.sql`.
 - [Nathan (50%), An (50%)] FR-S8: View Transcript - Students can view their GPA, completed classes, grades, and term names. Dropped in-progress classes remain in the database but are not shown on the transcript.
 - [Vincent] FR-S9: View Financial Summary - Student can view their tuition balance, payments, and charges by term.
 - [Vincent (70%), An (30%)] FR-S10: Password change - Users can change their password, which stores a bcrypt hash, updates the last-changed timestamp, rejects same-password updates, invalidates the web session, and redirects them to login.
-- [Nathan] FS-11: Course Information - Students can view the course information details including the start/end time, waitlist capacity, and more.
+- [Nathan] FR-S11: Course Information - Students can view the course information details including the start/end time, waitlist capacity, and more.
 
 ## Implemented Faculty Functional Requirements (Updated 5/11/2026)
 
